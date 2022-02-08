@@ -19,6 +19,8 @@ mongoose.connect(dbUri, {useNewUrlParser: true, useUnifiedTopology: true}, () =>
     console.log("Connected to Mongo DB")
 })
 
+app.use("/", testRoute)
+
 //listen on port PORT
 const PORT = process.env.PORT || 8000
 app.listen(PORT, () => {
