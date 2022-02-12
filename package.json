@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "type": "module",
+  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
@@ -21,12 +21,14 @@
   },
   "homepage": "https://github.com/IntraZeal/backend#readme",
   "dependencies": {
+    "@prisma/client": "^3.9.2",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "mongoose": "^6.2.1",
     "pg": "^8.7.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "prisma": "^3.9.2"
   }
 }
