@@ -12,6 +12,10 @@ enum Role {
   RECRUITER
   ADMIN
 }
+enum Status {
+  OPEN
+  CLOSED
+}
 
 model Account {
   id                 String  @id @default(cuid())
@@ -49,6 +53,8 @@ model Post {
   job_type       String          @db.VarChar(25)
   salary         Decimal         @db.Decimal
   job_experience Decimal         @db.Decimal
+  status         Status          @default(OPEN)
+  createdAt      DateTime
   User           User            @relation(fields: [userid], references: [id], onDelete: Cascade, onUpdate: NoAction)
   Post_category  Post_category[]
 

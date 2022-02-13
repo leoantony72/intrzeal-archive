@@ -2,7 +2,18 @@ import express from "express";
 const router = express.Router();
 
 import { createPost } from "../../controllers/Recruiter/Createpost.js";
+import { deletePost } from "../../controllers/Recruiter/Deletejobpost.js";
+import {
+  getPost,
+  getPost_by_Id,
+} from "../../controllers/Recruiter/Getjobpost.js";
+import { updatePost } from "../../controllers/Recruiter/Updatejobpost.js";
 
-router.post("/posts", createPost);
+router.get("/posts", getPost);
+router.get("/post/:id", getPost_by_Id);
 
-export { router as register }
+router.post("/post", createPost);
+router.put("/post/:id", updatePost);
+router.delete("/post/:id", deletePost);
+
+export { router as Recruiter };

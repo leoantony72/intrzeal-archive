@@ -8,8 +8,8 @@ export const createPost = async (req, res) => {
   const { title, descriptions, job_type, salary, job_experience } = req.body;
   try {
     //get userid from cookies
-    const userid = "ckzjhuolr0000j9tmrql0aj5p";
-    //creates job_post in db
+    const userid = "ckzkossio0000o8tmliq9p2yt";
+    const date = new Date();
     const createPost = await prisma.Post.create({
       data: {
         userid: userid,
@@ -18,10 +18,11 @@ export const createPost = async (req, res) => {
         job_type: job_type,
         salary: salary,
         job_experience: job_experience,
+        createdAt: date,
       },
     });
 
-    return res.json({ data: createPost, db: get });
+    return res.json({ data: createPost});
   } catch (err) {
     return res.status(409).json(err);
   }

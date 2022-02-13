@@ -7,7 +7,7 @@ import express from "express";
 const app = express();
 
 //route imports
-import {register} from "./routes/Recruiter/Route.js";
+import {Recruiter} from "./routes/Recruiter/Route.js";
 
 //middleware
 app.use(express.urlencoded({ extended: true }));
@@ -16,7 +16,7 @@ app.use(cors())
 
 //routes
 
-app.use("/api/recruiter", register);
+app.use("/api/recruiter", Recruiter);
 
 
 //listen on port PORT
