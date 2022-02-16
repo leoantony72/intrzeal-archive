@@ -9,10 +9,12 @@ import {
 } from "../../controllers/Recruiter/Getjobpost.js";
 import { updatePost } from "../../controllers/Recruiter/Updatejobpost.js";
 
+import {validateCreatePost} from '../../utils/validators/validateCreatePost.js';
+
 router.get("/posts", getPost);
 router.get("/post/:id", getPost_by_Id);
 
-router.post("/post", createPost);
+router.post("/post", validateCreatePost, createPost);
 router.put("/post/:id", updatePost);
 router.delete("/post/:id", deletePost);
 

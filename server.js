@@ -1,6 +1,5 @@
 import dotenv from "dotenv"
 dotenv.config()
-import cors from "cors"
 
 //creating express app
 import express from "express";
@@ -10,9 +9,17 @@ const app = express();
 import {Recruiter} from "./routes/Recruiter/Route.js";
 
 //middleware
+import bloatRouter from "./utils/security/bloat.js";
+app.use(bloatRouter)
+
+import {limiter} from "./utils/security/ratelimit.js";
+app.use(limiter)
+app.set('trust proxy')
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors())
+
+
+
 
 //routes
 
