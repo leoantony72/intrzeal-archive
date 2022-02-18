@@ -17,14 +17,13 @@ export const updatePost = async (req, res) => {
       data: {
         title: title,
         descriptions: descriptions,
-        job_type: job_type,
         salary: salary,
         job_experience: job_experience,
         status: status,
       },
     });
 
-    return res.json({ data: updatePost });
+    return res.json({success:"Job Post Updated"});
   } catch (err) {
     return res.status(409).json(err);
   }

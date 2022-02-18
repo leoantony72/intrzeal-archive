@@ -86,7 +86,6 @@ CREATE TABLE "Post"(
     "userid" VARCHAR(11) NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
     "title" VARCHAR(200) NOT NULL,
     "descriptions" TEXT NOT NULL,
-    "job_type" VARCHAR(25) NOT NULL,
     "salary" NUMERIC NOT NULL,
     "job_experience" NUMERIC NOT NULL
 );

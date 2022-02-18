@@ -3,27 +3,38 @@ const { PrismaClient } = pkg;
 const prisma = new PrismaClient();
 
 export const createPost = async (req, res) => {
-  //Middleware to check if user is authenticated and user Roles(RECRUITER)
-  //Middleware for validating user Input
-  const { title, descriptions, job_type, salary, job_experience } = req.body;
-  try {
-    //get userid from cookies
-    const userid = "ckzkossio0000o8tmliq9p2yt";
-    const date = new Date();
-    const createPost = await prisma.Post.create({
-      data: {
-        userid: userid,
-        title: title,
-        descriptions: descriptions,
-        job_type: job_type,
-        salary: salary,
-        job_experience: job_experience,
-        createdAt: date,
-      },
-    });
+  const { title, descriptions, salary, job_experience } = req.body;
 
-    return res.json({ data: createPost});
+  const { category } = req.body;
+  try {
+    const userid = "ckzrv2bh200004ftmeapovpbl";
+    const date = new Date();
+    const result = await prisma.$transaction(async (prisma) => {
+      const createPost = await prisma.Post.create({
+        data: {
+          userid: userid,
+          title: title,
+          descriptions: descriptions,
+          salary: salary,
+          job_experience: job_experience,
+          createdat: date,
+        },
+      });
+      console.log(createPost);
+      const postid = createPost.id;
+      const addCategory = await prisma.Post_category.create({
+        data: {
+          postid: postid,
+          category_id: category,
+        },
+      });
+      return { createPost, addCategory };
+    });
+    console.log(result);
+
+    return res.json({ success: "Job Post Added" });
   } catch (err) {
+    console.log(err.message);
     return res.status(409).json(err);
   }
 };

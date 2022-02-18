@@ -35,10 +35,8 @@ CREATE TABLE "Post" (
     "userid" TEXT NOT NULL,
     "title" VARCHAR(200) NOT NULL,
     "descriptions" TEXT NOT NULL,
-    "job_type" VARCHAR(25) NOT NULL,
     "salary" DECIMAL NOT NULL,
     "job_experience" DECIMAL NOT NULL,
-
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
 

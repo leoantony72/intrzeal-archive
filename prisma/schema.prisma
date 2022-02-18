@@ -1,20 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-enum Role {
-  INTERN
-  RECRUITER
-  ADMIN
-}
-enum Status {
-  OPEN
-  CLOSED
 }
 
 model Account {
@@ -39,7 +30,7 @@ model Account {
 
 model Category {
   id            String          @id @default(cuid())
-  category      String          @db.VarChar(100)
+  category      String          @unique @db.VarChar(100)
   Post_category Post_category[]
 
   @@index([id], map: "idx_categoryid")
@@ -47,14 +38,13 @@ model Category {
 
 model Post {
   id             String          @id @default(cuid())
-  userid         String          
+  userid         String
   title          String          @db.VarChar(200)
   descriptions   String
-  job_type       String          @db.VarChar(25)
   salary         Decimal         @db.Decimal
   job_experience Decimal         @db.Decimal
   status         Status          @default(OPEN)
-  createdAt      DateTime
+  createdat      DateTime
   User           User            @relation(fields: [userid], references: [id], onDelete: Cascade, onUpdate: NoAction)
   Post_category  Post_category[]
 
@@ -62,8 +52,8 @@ model Post {
 }
 
 model Post_category {
-  postid      String   
-  category_id String  
+  postid      String
+  category_id String
   Category    Category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Post        Post     @relation(fields: [postid], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
@@ -99,4 +89,13 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+enum Role {
+  INTERN
+  RECRUITER
+  ADMIN
+}
 
+enum Status {
+  OPEN
+  CLOSED
+}
