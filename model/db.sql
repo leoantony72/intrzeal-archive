@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('INTERN', 'RECRUITER', 'ADMIN');
 
+-- CreateEnum
+CREATE TYPE "Status" AS ENUM ('OPEN', 'CLOSED');
+
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
@@ -19,6 +22,36 @@ CREATE TABLE "Account" (
     "oauth_token" TEXT,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Category" (
+    "id" TEXT NOT NULL,
+    "category" VARCHAR(100) NOT NULL,
+
+    CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Post" (
+    "id" TEXT NOT NULL,
+    "userid" TEXT NOT NULL,
+    "title" VARCHAR(200) NOT NULL,
+    "descriptions" TEXT NOT NULL,
+    "salary" DECIMAL NOT NULL,
+    "job_experience" DECIMAL NOT NULL,
+    "status" "Status" NOT NULL DEFAULT E'OPEN',
+    "createdat" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Post_category" (
+    "postid" TEXT NOT NULL,
+    "category_id" TEXT NOT NULL,
+
+    CONSTRAINT "post_category_pkey" PRIMARY KEY ("postid","category_id")
 );
 
 -- CreateTable
@@ -43,6 +76,17 @@ CREATE TABLE "User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
+CREATE TABLE "Applicant" (
+    "userid" TEXT NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
+    "postid" TEXT NOT NULL REFERENCES "Post"("id") ON DELETE CASCADE,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    
+    CONSTRAINT "applicant_pkey" PRIMARY KEY ("userid","postid")
+);
+
+CREATE INDEX "idx_applicant_uid" ON "Applicant"("userid");
+CREATE INDEX "idx_applicant_pid" ON "Applicant"("postid");
+
 -- CreateTable
 CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
@@ -52,6 +96,18 @@ CREATE TABLE "VerificationToken" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Category_category_key" ON "Category"("category");
+
+-- CreateIndex
+CREATE INDEX "idx_categoryid" ON "Category"("id");
+
+-- CreateIndex
+CREATE INDEX "idx_postid" ON "Post"("id");
+
+-- CreateIndex
+CREATE INDEX "idx_p_categoryid" ON "Post_category"("category_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
@@ -69,35 +125,13 @@ CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationTok
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Post" ADD CONSTRAINT "Post_userid_fkey" FOREIGN KEY ("userid") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "Post_category" ADD CONSTRAINT "Post_category_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "Category"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "Post_category" ADD CONSTRAINT "Post_category_postid_fkey" FOREIGN KEY ("postid") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+
+-- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
-
-
-
-CREATE TABLE "Category"(
-    "id" VARCHAR(11) NOT NULL PRIMARY KEY,
-    "category" VARCHAR(100) NOT NULL
-);
-CREATE INDEX "idx_categoryid" ON "Category"("id");
-
-
-CREATE TABLE "Post"(
-    "id" VARCHAR(11) NOT NULL PRIMARY KEY,
-    "userid" VARCHAR(11) NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "title" VARCHAR(200) NOT NULL,
-    "descriptions" TEXT NOT NULL,
-    "salary" NUMERIC NOT NULL,
-    "job_experience" NUMERIC NOT NULL
-);
-CREATE INDEX "idx_postid" ON "Post"("id");
-
-
-CREATE TABLE "Post_category"(
-    "postid" VARCHAR(11) NOT NULL REFERENCES "Post"("id") ON DELETE CASCADE,
-    "category_id" VARCHAR(11) NOT NULL REFERENCES "Category"("id"),
-    CONSTRAINT "post_category_pkey" PRIMARY KEY ("postid", "category_id")
-);
-CREATE INDEX "idx_postid" ON "Post_category"("postid");
-CREATE INDEX "idx_p_categoryid" ON "Post_category"("category_id");
-
-

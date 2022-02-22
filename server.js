@@ -6,6 +6,7 @@ import express from "express";
 const app = express();
 
 //route imports
+import { common } from "./routes/Route.js";
 import { Admin } from "./routes/Admin/Route.js";
 import { Intern } from "./routes/Intern/Route.js";
 import { Recruiter } from "./routes/Recruiter/Route.js";
@@ -22,6 +23,7 @@ app.use(express.json());
 
 //routes
 
+app.use("/api", common);
 app.use("/api/recruiter", Recruiter);
 app.use("/api/intern", Intern);
 app.use("/api/admin", Admin);
