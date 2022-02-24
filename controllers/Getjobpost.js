@@ -8,10 +8,10 @@ export const getPost = async (req, res) => {
     const userid = "ckzkossio0000o8tmliq9p2yt";
     const getPost =
       await prisma.$queryRaw`SELECT p.id,p.userid,p.title,p.salary,p.createdat,c.category FROM "Post" p JOIN "Post_category" pc ON p.id = pc.postid JOIN "Category" c ON pc.category_id = c.id WHERE p.status = ${"OPEN"}`;
-    return res.json({ data: getPost });
+    return res.status(200).json({ data: getPost });
   } catch (err) {
     console.log(err.message);
-    return res.status(409).json(err);
+    return res.status(400).json({err:err});
   }
 };
 
@@ -23,6 +23,6 @@ export const getPost_by_Id = async (req, res) => {
 
     return res.json({ data: getPost });
   } catch (err) {
-    return res.status(409).json(err);
+    return res.status(400).json({err:err});
   }
 };

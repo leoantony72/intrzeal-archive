@@ -23,8 +23,8 @@ export const updatePost = async (req, res) => {
       },
     });
 
-    return res.json({success:"Job Post Updated"});
+    return res.status(200).json({ success: "Job Post Updated" });
   } catch (err) {
-    return res.status(409).json(err);
+    return res.status(400).json({err:err});
   }
 };

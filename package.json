@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/IntraZeal/backend#readme",
   "dependencies": {
-    "@prisma/client": "^3.9.2",
+    "@prisma/client": "^3.10.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
@@ -32,6 +32,6 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15",
-    "prisma": "^3.9.2"
+    "prisma": "^3.10.0"
   }
 }

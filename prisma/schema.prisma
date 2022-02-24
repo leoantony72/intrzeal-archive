@@ -40,7 +40,7 @@ model Post {
   id             String          @id @default(cuid())
   userid         String
   title          String          @db.VarChar(200)
-  descriptions   String
+  descriptions   String          @db.VarChar(1000)
   salary         Decimal         @db.Decimal
   job_experience Decimal         @db.Decimal
   status         Status          @default(OPEN)
@@ -92,11 +92,12 @@ model VerificationToken {
 }
 
 model Applicant {
-  userid    String
-  postid    String
-  createdAt DateTime
-  Post      Post     @relation(fields: [postid], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  User      User     @relation(fields: [userid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  userid       String
+  postid       String
+  createdAt    DateTime
+  description  String    @db.VarChar(250)
+  Post         Post     @relation(fields: [postid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User         User     @relation(fields: [userid], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@id([userid, postid], map: "applicant_pkey")
   @@index([postid], map: "idx_applicant_pid")

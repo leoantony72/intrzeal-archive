@@ -14,7 +14,6 @@ export const addCategory = async (req, res) => {
 
     return res.json({ success: "Category Added" });
   } catch (err) {
-    console.log(err.message);
-    return res.status(409).json(err);
+    return res.status(400).json({err:err});
   }
 };

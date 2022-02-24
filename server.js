@@ -28,6 +28,7 @@ app.use("/api/recruiter", Recruiter);
 app.use("/api/intern", Intern);
 app.use("/api/admin", Admin);
 
+
 //listen on port PORT
 const PORT = process.env.PORT || 1500;
 

@@ -20,7 +20,6 @@ export const createPost = async (req, res) => {
           createdat: date,
         },
       });
-      console.log(createPost);
       const postid = createPost.id;
       const addCategory = await prisma.Post_category.create({
         data: {
@@ -30,12 +29,10 @@ export const createPost = async (req, res) => {
       });
       return { createPost, addCategory };
     });
-    console.log(result);
 
-    return res.json({ success: "Job Post Added" });
+    return res.status(201).json({ success: "Job Post Added" });
   } catch (err) {
-    console.log(err.message);
-    return res.status(409).json(err);
+    return res.status(400).json({err:err});
   }
 };
 
