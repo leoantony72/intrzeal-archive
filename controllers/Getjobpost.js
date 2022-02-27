@@ -5,7 +5,7 @@ import("@prisma/client");
 
 export const getPost = async (req, res) => {
   try {
-    const userid = "ckzkossio0000o8tmliq9p2yt";
+    const userid = "ckzrv2bh200004ftmeapovpbl";
     const getPost =
       await prisma.$queryRaw`SELECT p.id,p.userid,p.title,p.salary,p.createdat,c.category FROM "Post" p JOIN "Post_category" pc ON p.id = pc.postid JOIN "Category" c ON pc.category_id = c.id WHERE p.status = ${"OPEN"}`;
     return res.status(200).json({ data: getPost });

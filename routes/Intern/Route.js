@@ -5,7 +5,7 @@ import { delete_applied_Post } from "../../controllers/Intern/deleteAppliedpost.
 import { get_applied_Post } from "../../controllers/Intern/getAppliedpost.js";
 import { checkifpostexist } from "../../middleware/checkifpostexist.js";
 
-router.get("/jobpost", get_applied_Post);
+router.get("/jobpost", get_applied_Post); //gets the job_post user applied to
 router.post("/jobpost/:pid", checkifpostexist, applyPost); //apply to job post
 router.delete("/jobpost/:pid", checkifpostexist, delete_applied_Post); //del the application
 
