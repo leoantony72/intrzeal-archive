@@ -3,13 +3,13 @@ const { PrismaClient } = pkg;
 const prisma = new PrismaClient();
 
 export const deletePost = async (req, res) => {
-  const { id } = req.params;
+  const { pid } = req.params;
 
   const uid = "ckzrv2bh200004ftmeapovpbl";
   try {
     const delPost = await prisma.post.deleteMany({
       where: {
-        id: id,
+        id: pid,
         userid: uid,
       },
     });

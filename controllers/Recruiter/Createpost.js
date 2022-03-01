@@ -21,18 +21,24 @@ export const createPost = async (req, res) => {
         },
       });
       const postid = createPost.id;
-      const addCategory = await prisma.Post_category.create({
-        data: {
-          postid: postid,
-          category_id: category,
-        },
+
+      const addCategory = await prisma.Post_category.createMany({
+        data: [
+          { postid: postid, category_id: category[0] },
+          { postid: postid, category_id: category[1] || category[0] },
+          { postid: postid, category_id: category[2] || category[0] },
+          { postid: postid, category_id: category[3] || category[0] },
+          { postid: postid, category_id: category[4] || category[0] },
+        ],
+        skipDuplicates: true,
       });
       return { createPost, addCategory };
     });
 
     return res.status(201).json({ success: "Job Post Added" });
   } catch (err) {
-    return res.status(400).json({err:err});
+    console.log(err.message);
+    return res.status(400).json({ err: "Something Went Wrong" });
   }
 };
 
