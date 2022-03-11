@@ -6,8 +6,8 @@ export const getUsers = async (req, res) => {
   try {
     const getUser = await prisma.User.findMany({});
 
-    return res.json({ data: getUser });
+    return res.json({ data: { success: getUser } });
   } catch (err) {
-    return res.status(400).json({ err: err });
+    return res.status(400).json({ data: { err: err } });
   }
 };

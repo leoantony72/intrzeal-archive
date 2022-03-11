@@ -8,14 +8,14 @@ export const delete_applied_Post = async (req, res) => {
   const uid = "ckzrv2bh200004ftmeapovpbl";
   try {
     const delete_applied_Post = await prisma.Applicant.deleteMany({
-      where:{
-          postid: pid,
-          userid: uid,
-        },
+      where: {
+        postid: pid,
+        userid: uid,
+      },
     });
 
-    return res.status(200).json({ success: "application deleted" });
+    return res.status(200).json({ data: { success: "application deleted" } });
   } catch (err) {
-    return res.status(400).json({err:err.message});
+    return res.status(400).json({ data: { err: err.message } });
   }
 };

@@ -1,5 +1,4 @@
 import pkg from "@prisma/client";
-import { checkifpostexist } from "../../middleware/checkifpostexist.js";
 const { PrismaClient } = pkg;
 const prisma = new PrismaClient();
 
@@ -18,9 +17,8 @@ export const applyPost = async (req, res) => {
         postid: pid,
       },
     });
-    // console.log(checkifapplied);
     if (checkifapplied[0]) {
-      return res.status(400).json({ err: "Alredy Applied" });
+      return res.status(400).json({ data: { err: "Alredy Applied" } });
     }
 
     const applytoPost = await prisma.Applicant.create({
@@ -31,8 +29,8 @@ export const applyPost = async (req, res) => {
         createdAt: date,
       },
     });
-    return res.status(201).json({ success: "Applied to job" });
+    return res.status(201).json({ data: { success: "Applied to job" } });
   } catch (err) {
-    return res.status(400).json({ err: err.message });
+    return res.status(400).json({ data:{err: err.message} });
   }
 };
