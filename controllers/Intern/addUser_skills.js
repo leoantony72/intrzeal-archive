@@ -6,14 +6,17 @@ export const getUser_skill = async (req, res) => {
   //get userid from session
   const uid = "ckzrv2bh200004ftmeapovpbl";
   try {
-    const getuser_skill = await prisma.User_meta_category.findMany({
-      where: {
-        userId: uid,
-      },
-      select: {
-        categoryId: true
-      },
-    });
+    // const getuser_skill = await prisma.User_meta_category.findMany({
+    //   where: {
+    //     userId: uid,
+    //   },
+    //   select: {
+    //     categoryId: true,
+    //   },
+    // });
+    const getuser_skill =
+      await prisma.$queryRaw`SELECT uc."categoryId",c."category" FROM "User_meta_category" AS uc JOIN "Category" c ON uc."categoryId" = c."id" WHERE uc."userId"=${uid}`;
+
     return res.status(201).json({ data: { success: getuser_skill } });
   } catch (err) {
     console.log(err.message);
