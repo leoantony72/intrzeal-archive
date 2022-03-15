@@ -9,6 +9,6 @@ export const checkifpostexist = async (req, res, next) => {
       id: pid,
     },
   });
-  if (!check) return res.status(404).json({ err: "Job Post Not Found" });
+  if (!check) return res.status(404).json({ data:{err: "Job Post Not Found"} });
   next();
 };

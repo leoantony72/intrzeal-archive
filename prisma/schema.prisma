@@ -82,6 +82,7 @@ model User {
   Post          Post[]
   Session       Session[]
   User_meta     User_meta[]
+  User_meta_category  User_meta_category[]
 }
 
 model User_meta {
@@ -94,6 +95,14 @@ model User_meta {
   resume       String    @db.VarChar(200)
   User         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@id([userId], map: "user_meta_pkey")
+}
+
+model User_meta_category{
+  userId  String
+  categoryId String
+  User         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@id([userId, categoryId], map: "user_meta_category_pkey")
+  @@index([userId], map: "idx_umc_userid")
 }
 
 model VerificationToken {

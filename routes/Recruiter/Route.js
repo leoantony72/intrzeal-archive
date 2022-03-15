@@ -13,22 +13,28 @@ import { checkif_category_exist } from "../../middleware/checkifcategoryexist.js
 import { getAppliedUsers } from "../../controllers/Recruiter/GetappliedUser.js";
 
 import { validateCreatePost } from "../../utils/validators/validateCreatePost.js";
+import { updateJob_Status } from "../../controllers/Recruiter/statusUpdate.js";
 
 router.post("/post", checkif_category_exist, validateCreatePost, createPost); //create new job_post
-router.put("/post/:pid", checkifpostexist, checkif_category_exist, updatePost); //update jobpost
-router.post(
-  "/post/category/:pid",
-  checkifpostexist,
-  checkif_category_exist,
-  updatePost_addcategory
-); //add individual category
-router.delete(
-  "/post/category/:pid",
-  checkifpostexist,
-  checkif_category_exist,
-  updatePost_delcategory
-); //del individual category
-router.delete("/post/:pid", checkifpostexist, deletePost); //del job post
+router
+  .put("/post/:pid", checkifpostexist, checkif_category_exist, updatePost) //update jobpost
+  .delete("/post/:pid", checkifpostexist, deletePost); //del job post
+
+router
+  .post(
+    "/post/category/:pid",
+    checkifpostexist,
+    checkif_category_exist,
+    updatePost_addcategory
+  ) //add individual category
+  .delete(
+    "/post/category/:pid",
+    checkifpostexist,
+    checkif_category_exist,
+    updatePost_delcategory
+  ); //del individual category
+
+router.put("/post/status/:pid", updateJob_Status); //update job status to OPEN / CLOSED
 
 router.get("/applicants/:pid", checkifpostexist, getAppliedUsers); //get applied users to a post
 

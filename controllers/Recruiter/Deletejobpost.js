@@ -14,8 +14,8 @@ export const deletePost = async (req, res) => {
       },
     });
 
-    return res.status(200).json({ success: "Job Post Deleted" });
+    return res.status(200).json({ data: { success: "Job Post Deleted" } });
   } catch (err) {
-    return res.status(400).json({err:err});
+    return res.status(400).json({ data: { err: err } });
   }
 };

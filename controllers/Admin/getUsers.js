@@ -1,13 +1,26 @@
 import pkg from "@prisma/client";
-const { PrismaClient, PrismaClientValidationError } = pkg;
+const { PrismaClient } = pkg;
 const prisma = new PrismaClient();
 
 export const getUsers = async (req, res) => {
+  const { role } = req.query;
   try {
-    const getUser = await prisma.User.findMany({});
+    if (role) {
+      if (role !== "INTERN")
+        if (role !== "RECRUITER")
+          return res.status(400).json({ data: { err: "Role Not Found" } });
+      const getUser = await prisma.User.findMany({
+        where: {
+          role: role,
+        },
+      });
+      return res.json({ data: { success: getUser } });
+    }
+    const getUser = await prisma.User.findMany();
 
-    return res.json({ data: getUser });
+    return res.json({ data: { success: getUser } });
   } catch (err) {
-    return res.status(400).json({ err: err });
+    console.log(err.message);
+    return res.status(400).json({ data: { err: err } });
   }
 };
