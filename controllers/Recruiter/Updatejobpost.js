@@ -11,9 +11,11 @@ export const updatePost = async (req, res) => {
       .status(400)
       .json({ data: { err: "Provide Status Open or Closed" } });
   try {
-    const updatePost = await prisma.post.update({
+    const uid = "ckzrv2bh200004ftmeapovpbl";
+    const updatePost = await prisma.post.updateMany({
       where: {
         id: pid,
+        userid: uid,
       },
       data: {
         title: title,
