@@ -76,6 +76,7 @@ model User {
   email         String?     @unique
   emailVerified DateTime?
   image         String?
+  status        User_status @default(ACTIVE)
   role          Role        @default(INTERN)
   Account       Account[]
   Applicant     Applicant[]
@@ -132,6 +133,10 @@ enum Role {
   ADMIN
 }
 
+enum User_status {
+  ACTIVE
+  BANNED
+}
 enum Status {
   OPEN
   CLOSED
