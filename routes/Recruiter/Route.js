@@ -14,6 +14,7 @@ import { getAppliedUsers } from "../../controllers/Recruiter/GetappliedUser.js";
 
 import { validateCreatePost } from "../../utils/validators/validateCreatePost.js";
 import { updateJob_Status } from "../../controllers/Recruiter/statusUpdate.js";
+import { updateApplicantstatus } from "../../controllers/Recruiter/updateApplicantstatus.js";
 
 router.post("/post", checkif_category_exist, validateCreatePost, createPost); //create new job_post
 router
@@ -37,5 +38,7 @@ router
 router.put("/post/status/:pid", updateJob_Status); //update job status to OPEN / CLOSED
 
 router.get("/applicants/:pid", checkifpostexist, getAppliedUsers); //get applied users to a post
+
+router.post("/hire", checkifpostexist, updateApplicantstatus); //The User Gets Selected for the Job 
 
 export { router as Recruiter };

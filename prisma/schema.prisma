@@ -82,11 +82,12 @@ model User {
   Applicant     Applicant[]
   Post          Post[]
   Session       Session[]
-  User_meta     User_meta[]
+  User_meta     User_meta_intern[]
   User_meta_category  User_meta_category[]
+  User_meta_recruiter  User_meta_recruiter[]
 }
 
-model User_meta {
+model User_meta_intern {
   userId       String  
   personal_web String    @db.VarChar(150)
   github       String?   @db.VarChar(150) 
@@ -94,6 +95,20 @@ model User_meta {
   linkedin     String    @db.VarChar(150)
   other        String?   @db.VarChar(150)
   resume       String    @db.VarChar(200)
+  User         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@id([userId], map: "user_meta_rec_pkey")
+}
+
+model User_meta_recruiter {
+  userId       String  
+  company      String    @db.VarChar(150)
+  website      String    @db.VarChar(150)
+  github       String?   @db.VarChar(150) 
+  twitter      String?   @db.VarChar(150)
+  linkedin     String?   @db.VarChar(150)
+  other        String?   @db.VarChar(150)
+  employee     Int
+  country      String    @db.VarChar(120)
   User         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@id([userId], map: "user_meta_pkey")
 }
@@ -118,6 +133,7 @@ model Applicant {
   userid       String
   postid       String
   createdAt    DateTime
+  status       Applicant_status @default(SUBMITTED)
   description  String    @db.VarChar(250)
   Post         Post     @relation(fields: [postid], references: [id], onDelete: Cascade, onUpdate: NoAction)
   User         User     @relation(fields: [userid], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -131,6 +147,11 @@ enum Role {
   INTERN
   RECRUITER
   ADMIN
+}
+
+enum Applicant_status {
+  SUBMITTED
+  SELECTED
 }
 
 enum User_status {
