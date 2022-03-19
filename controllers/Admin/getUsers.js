@@ -1,6 +1,4 @@
-import pkg from "@prisma/client";
-const { PrismaClient } = pkg;
-const prisma = new PrismaClient();
+import { User } from "../../model/Admin/User.js";
 
 export const getUsers = async (req, res) => {
   const { role } = req.query;
@@ -9,57 +7,24 @@ export const getUsers = async (req, res) => {
       if (role !== "INTERN")
         if (role !== "RECRUITER")
           return res.status(400).json({ data: { err: "Role Not Found" } });
-      const getUser = await prisma.User.findMany({
-        where: {
-          role: role,
-        },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          role: true,
-          status: true,
-        },
-      });
-      return res.json({ data: { success: getUser } });
-    }
-    const getUser = await prisma.User.findMany({
-      select: {
-        id: true,
-        name: true,
-        image: true,
-        email: true,
-        emailVerified: true,
-        role: true,
-        status: true,
-      },
-    });
 
-    return res.json({ data: { success: getUser } });
+      const getUserbyrole = await User.getUser_by_role(role);
+      return res.json({ data: { success: getUserbyrole } });
+    }
+
+    const getUsers = await User.getUser();
+    return res.json({ data: { success: getUsers } });
   } catch (err) {
-    console.log(err.message);
-    return res.status(400).json({ data: { err: err } });
+    return res.status(400).json({ data: { err: err.message } });
   }
 };
+
 export const getUsersbyID = async (req, res) => {
   const { uid } = req.query;
   try {
-    const getUser = await prisma.User.findMany({
-      where: {
-        id: uid,
-      },
-      select: {
-        id: true,
-        name: true,
-        image: true,
-        email: true,
-        emailVerified: true,
-        role: true,
-        status: true,
-      },
-    });
+    const getUserbyID = await User.getUser_by_ID(uid);
 
-    return res.json({ data: { success: getUser } });
+    return res.json({ data: { success: getUserbyID } });
   } catch (err) {
     console.log(err.message);
     return res.status(400).json({ data: { err: err } });

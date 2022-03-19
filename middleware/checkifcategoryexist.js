@@ -1,6 +1,4 @@
-import pkg from "@prisma/client";
-const { PrismaClient } = pkg;
-const prisma = new PrismaClient();
+import { Category } from "../model/middlewares/Category.js";
 
 export const checkif_category_exist = async (req, res, next) => {
   const { category } = req.body;
@@ -8,8 +6,7 @@ export const checkif_category_exist = async (req, res, next) => {
   let n_category = category.length;
   if (n_category > 5)
     return res.status(400).json({ data: { err: "Only 5 Category allowed" } });
-  const check =
-    await prisma.$queryRaw`SELECT COUNT("id") FROM "Category" WHERE id IN(${category[0]},${category[1]},${category[2]},${category[3]},${category[4]})`;
+  const check = await Category.check_Category_exist(category);
 
   const n_exist = check[0].count;
   if (n_category != n_exist)

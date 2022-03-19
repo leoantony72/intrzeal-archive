@@ -1,16 +1,12 @@
-import pkg from "@prisma/client";
-const { PrismaClient } = pkg;
-const prisma = new PrismaClient();
+import { Post } from "../../model/Admin/Post.js";
+import { User } from "../../model/Admin/User.js";
 
 export const getStat = async (req, res) => {
-  const { role } = req.query;
   try {
-    const getUser_Stat =
-      await prisma.$queryRaw`SELECT u.role,COUNT(u.id) AS USERS FROM "User" AS u GROUP BY u.role`;
-    const getPost_Stat =
-      await prisma.$queryRaw`SELECT p.status,COUNT(p.status) AS posts FROM "Post" AS p GROUP BY p.status`;
+    const user_stats = await User.stat();
+    const post_stats = await Post.stat();
     return res.status(200).json({
-      data: { success: { user: getUser_Stat, post: getPost_Stat } },
+      data: { success: { user: user_stats, post: post_stats } },
     });
   } catch (err) {
     console.log(err.message);

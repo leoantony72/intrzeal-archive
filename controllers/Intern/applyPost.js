@@ -1,6 +1,4 @@
-import pkg from "@prisma/client";
-const { PrismaClient } = pkg;
-const prisma = new PrismaClient();
+import { Applicant } from "../../model/Intern/Applicant.js";
 
 export const applyPost = async (req, res) => {
   const date = new Date();
@@ -11,26 +9,21 @@ export const applyPost = async (req, res) => {
   const uid = "ckzrv2bh200004ftmeapovpbl";
   try {
     //checks if user applied to job post
-    const checkifapplied = await prisma.Applicant.findMany({
-      where: {
-        userid: uid,
-        postid: pid,
-      },
-    });
+    const checkifapplied =await Applicant.checkifApplied(uid, pid);
     if (checkifapplied[0]) {
       return res.status(400).json({ data: { err: "Alredy Applied" } });
     }
 
-    const applytoPost = await prisma.Applicant.create({
-      data: {
-        userid: uid,
-        postid: pid,
-        description: description,
-        createdAt: date,
-      },
-    });
+    const applytoPost = await Applicant.createApplication(
+      uid,
+      pid,
+      description,
+      date
+    );
+    if (!applytoPost.userid)
+      return res.status(400).json({ data: { err: "Something went wrong" } });
     return res.status(201).json({ data: { success: "Applied to job" } });
   } catch (err) {
-    return res.status(400).json({ data:{err: err.message} });
+    return res.status(400).json({ data: { err: err.message } });
   }
 };

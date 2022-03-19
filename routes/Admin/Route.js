@@ -13,8 +13,8 @@ router.get("/user", checkifUserexist, getUsersbyID);
 
 router.delete("/del-post", checkifUserexist, deletePost);
 
-router.put("/ban-users", checkifUserexist, banUsers);
-router.put("/unban-users", checkifUserexist, unbanUsers);
+router.put("/ban", checkifUserexist, banUsers);
+router.put("/unban", checkifUserexist, unbanUsers);
 
 router.get("/stat", getStat);
 

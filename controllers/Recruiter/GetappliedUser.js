@@ -1,14 +1,11 @@
-import pkg from "@prisma/client";
-const { PrismaClient } = pkg;
-const prisma = new PrismaClient();
-import("@prisma/client");
+import { Applicant } from "../../model/Recruiter/Applicant.js";
 
 export const getAppliedUsers = async (req, res) => {
   const { pid } = req.params;
+  const uid = "ckzrv2bh200004ftmeapovpbl";
   try {
-    const uid = "ckzrv2bh200004ftmeapovpbl";
-    const getPost =
-      await prisma.$queryRaw`SELECT a.postid,a.userid,a.description,a."createdAt",u.name,u.image FROM "Applicant" a JOIN "User" u ON a.userid = u.id WHERE a.userid=${uid} AND a.postid=${pid}`;
+    const getPost = await Applicant.getAppliedUser(uid, pid);
+
     return res.status(200).json({ data: { success: getPost } });
   } catch (err) {
     console.log(err.message);

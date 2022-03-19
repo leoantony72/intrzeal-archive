@@ -1,19 +1,15 @@
-import pkg from "@prisma/client";
-const { PrismaClient, PrismaClientValidationError } = pkg;
-const prisma = new PrismaClient();
+import { Category } from "../../model/Admin/Category.js";
 
 export const addCategory = async (req, res) => {
   const { category } = req.body;
 
   try {
-      const createPost = await prisma.Category.create({
-        data: {
-          category: category,
-        },
-      });
+    const createcategory = await Category.addcategory(category);
+    if (!createcategory.id)
+      return res.status(400).json({ data: { err: "Something went wrong" } });
 
-    return res.json({ data:{success: "Category Added"} });
+    return res.status(200).json({ data: { success: "Category Added" } });
   } catch (err) {
-    return res.status(400).json({data:{err:err.message}});
+    return res.status(400).json({ data: { err: err.message } });
   }
 };
