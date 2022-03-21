@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --silent",
     "start": "nodemon -L src/server.js",
     "dev": "nodemon -L src/server.js"
   },

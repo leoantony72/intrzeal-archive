@@ -3,8 +3,8 @@ import { ban, unban } from "../../model/Admin/User.js";
 export const banUsers = async (req, res) => {
   const { uid } = req.query;
   try {
-    const ban = await ban(uid);
-    if (!ban.id)
+    const banuser = await ban(uid);
+    if (!banuser.id)
       return res.status(400).json({ data: { err: "Something went wrong" } });
 
     return res.json({ data: { success: "User :" + uid + " Banned" } });
@@ -17,8 +17,8 @@ export const banUsers = async (req, res) => {
 export const unbanUsers = async (req, res) => {
   const { uid } = req.query;
   try {
-    const unban = await unbanban(uid);
-    if (!unban.id)
+    const unbanuser = await unban(uid);
+    if (!unbanuser.id)
       return res.status(400).json({ data: { err: "Something went wrong" } });
 
     return res.json({ data: { success: "User :" + uid + " Unbanned" } });

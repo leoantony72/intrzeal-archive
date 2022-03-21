@@ -20,7 +20,6 @@ describe("Common Endpoint /api/...", () => {
       test("/post/:pid : should return 400 status code", async () => {
         const pid = "123";
         const response = await request(app).get(`/api/post/${pid}`);
-        console.log(response);
         expect(response.statusCode).toBe(400);
       });
     });

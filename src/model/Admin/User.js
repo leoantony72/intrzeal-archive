@@ -49,7 +49,7 @@ export const getUser_by_role = async (role) => {
 export const ban = async (uid) => {
   return await prisma.User.update({
     where: {
-      id: uid,
+      id: uid
     },
     data: {
       status: "BANNED",
@@ -63,7 +63,7 @@ export const ban = async (uid) => {
 export const unban = async (uid) => {
   return await prisma.User.update({
     where: {
-      id: uid,
+      id: uid
     },
     data: {
       status: "ACTIVE",
