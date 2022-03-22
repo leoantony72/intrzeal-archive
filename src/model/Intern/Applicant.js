@@ -42,3 +42,14 @@ export const delApplication = async (pid, uid) => {
     },
   });
 };
+export const getJobStatus = async (pid) => {
+  return await prisma.Post.findMany({
+    where: {
+      id: pid,
+    },
+    select: {
+      userid: true,
+      status: true,
+    },
+  });
+};

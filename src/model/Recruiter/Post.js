@@ -61,9 +61,6 @@ export const update_Post = async (
       job_experience: job_experience,
       status: status,
     },
-    select: {
-      id: true,
-    },
   });
 };
 

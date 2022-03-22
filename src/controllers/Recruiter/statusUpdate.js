@@ -16,7 +16,7 @@ export const updateJob_Status = async (req, res) => {
       return res.status(400).json({ data: { err: "Something Went Wrong" } });
 
     return res
-      .status(200)
+      .status(201)
       .json({ data: { success: "Status Updated to " + status } });
   } catch (err) {
     return res.status(400).json({ data: { err: err.message } });

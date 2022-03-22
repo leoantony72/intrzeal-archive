@@ -20,11 +20,11 @@ export const updatePost = async (req, res) => {
       job_experience,
       status
     );
-    if (!update_Posts.id)
-      return res.status(400).json({ data: { err: "Something Went Wrong" } });
+    // if (!update_Posts.id)
+    //   return res.status(400).json({ data: { err: "Something Went Wrong" } });
     return res.status(200).json({ data: { success: "Job Post Updated" } });
   } catch (err) {
-    return res.status(400).json({ data: { err: err } });
+    return res.status(400).json({ data: { err: err.message } });
   }
 };
 

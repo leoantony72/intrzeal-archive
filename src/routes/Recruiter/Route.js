@@ -40,6 +40,6 @@ router.put("/post/status/:pid",checkifpostexist,checkifUserexist, updateJob_Stat
 
 router.get("/applicants/:pid", checkifpostexist, getAppliedUsers); //get applied users to a post
 
-router.post("/hire", checkifpostexist, updateApplicantstatus); //The User Gets Selected for the Job 
+router.put("/hire", checkifpostexist, updateApplicantstatus); //The User Gets Selected for the Job 
 
 export { router as Recruiter };
