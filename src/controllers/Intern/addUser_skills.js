@@ -11,7 +11,7 @@ export const getUser_skill = async (req, res) => {
   try {
     const getuser_skill = await getUser_skills(uid);
 
-    return res.status(201).json({ data: { success: getuser_skill } });
+    return res.status(200).json({ data: { success: getuser_skill } });
   } catch (err) {
     console.log(err.message);
     return res.status(400).json({ data: { err: "Something Went Wrong" } });

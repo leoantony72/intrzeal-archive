@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
+  "type": "module",
   "jest": {
     "testTimeout": 10000
   },
-  "type": "module",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --silent",
     "start": "nodemon -L src/server.js",
