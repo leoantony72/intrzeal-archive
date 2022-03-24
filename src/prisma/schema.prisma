@@ -89,18 +89,18 @@ model User {
 }
 
 model User_meta_intern {
-  userId       String  @id(map: "user_meta_rec_pkey")
+  user_id       String  @id(map: "user_meta_rec_pkey")
   personal_web String  @db.VarChar(150)
   github       String? @db.VarChar(150)
   twitter      String? @db.VarChar(150)
   linkedin     String  @db.VarChar(150)
   other        String? @db.VarChar(150)
   resume       String  @db.VarChar(200)
-  User         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User         User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model User_meta_recruiter {
-  userId   String  @id(map: "user_meta_pkey")
+  user_id   String  @id(map: "user_meta_pkey")
   company  String  @db.VarChar(150)
   website  String  @db.VarChar(150)
   github   String? @db.VarChar(150)
@@ -109,7 +109,7 @@ model User_meta_recruiter {
   other    String? @db.VarChar(150)
   employee Int
   country  String  @db.VarChar(120)
-  User     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User     User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model User_meta_category {
