@@ -15,18 +15,18 @@ export const applyPost = async (req, res) => {
     //checks if user applied to job post
     const checkifapplied = await checkifApplied(uid, pid);
     if (checkifapplied[0]) {
-      return res.status(400).json({ data: { err: "Alredy Applied" } });
+      return res.status(400).json({ err: "Alredy Applied" });
     }
 
     const JobStatus = await getJobStatus(pid);
     if (JobStatus[0].status === "CLOSED")
-      return res.status(400).json({ data: { err: "Job Post Closed" } });
+      return res.status(400).json({ err: "Job Post Closed" });
 
     const applytoPost = await createApplication(uid, pid, description, date);
     if (!applytoPost.userid)
-      return res.status(400).json({ data: { err: "Something went wrong" } });
-    return res.status(201).json({ data: { success: "Applied to job" } });
+      return res.status(400).json({ err: "Something went wrong" });
+    return res.status(201).json({ success: "Applied to job" });
   } catch (err) {
-    return res.status(400).json({ data: { err: err.message } });
+    return res.status(400).json({ err: err.message });
   }
 };

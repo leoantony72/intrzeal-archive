@@ -9,13 +9,13 @@ import { checkifUserexist } from "../../middleware/checkifUserexist.js";
 import { checkifpostexist } from "../../middleware/checkifpostexist.js";
 
 router.post("/category", addCategory);
+router.delete("/post/:pid", checkifpostexist, deletePost);
+
+
 router.get("/users", getUsers);
-router.get("/user", checkifUserexist, getUsersbyID);
-
-router.delete("/del-post", checkifpostexist,checkifUserexist, deletePost);
-
-router.put("/ban", checkifUserexist, banUsers);
-router.put("/unban", checkifUserexist, unbanUsers);
+router.get("/users/:uid", checkifUserexist, getUsersbyID);
+router.put("/users/ban/:uid", checkifUserexist, banUsers);
+router.put("/users/unban/:uid", checkifUserexist, unbanUsers);
 
 router.get("/stat", getStat);
 

@@ -1,4 +1,4 @@
 export const authorization = (req, res,next) => {
-  res.locals.uid = "ckzrv2bh200004ftmeapovpbl";
+  res.locals.uid = "123";
   next()
 };

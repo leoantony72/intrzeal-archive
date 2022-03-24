@@ -37,9 +37,6 @@ export const delApplication = async (pid, uid) => {
       postid: pid,
       userid: uid,
     },
-    select: {
-      userid: true,
-    },
   });
 };
 export const getJobStatus = async (pid) => {

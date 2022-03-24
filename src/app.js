@@ -29,4 +29,8 @@ app.use("/api/recruiter", authorization, Recruiter);
 app.use("/api/intern", authorization, Intern);
 app.use("/api/admin", authorization, Admin);
 
+app.get("*", function (req, res) {
+  res.status(404).json({ err: "Route Not Found" });
+});
+
 export default app;

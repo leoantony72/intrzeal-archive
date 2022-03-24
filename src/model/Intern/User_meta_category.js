@@ -25,8 +25,5 @@ export const delUser_skills = async (uid, category) => {
       userId: uid,
       categoryId: category[0],
     },
-    select: {
-      userId: true,
-    },
   });
 };
