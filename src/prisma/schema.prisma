@@ -1,0 +1,166 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+  User               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Category {
+  id                 String               @id @default(cuid())
+  category           String               @unique @db.VarChar(100)
+  Post_category      Post_category[]
+  User_meta_category User_meta_category[]
+
+  @@index([id], map: "idx_categoryid")
+}
+
+model Post {
+  id             String          @id @default(cuid())
+  userid         String
+  title          String          @db.VarChar(200)
+  description   String          @db.VarChar(1000)
+  salary         Decimal         @db.Decimal
+  job_experience Decimal         @db.Decimal
+  status         Status          @default(OPEN)
+  createdat      DateTime
+  User           User            @relation(fields: [userid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Applicant      Applicant[]
+  Post_category  Post_category[]
+
+  @@index([id], map: "idx_postid")
+}
+
+model Post_category {
+  post_id     String
+  category_id String
+  Category    Category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Post        Post     @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Post_category_postid_fkey")
+
+  @@id([post_id, category_id], map: "post_category_pkey")
+  @@index([category_id], map: "idx_p_categoryid")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                  String               @id @default(cuid())
+  name                String?
+  email               String?              @unique
+  emailVerified       DateTime?
+  image               String?
+  role                Role                 @default(INTERN)
+  status              User_status          @default(ACTIVE)
+  Account             Account[]
+  Applicant           Applicant[]
+  Post                Post[]
+  Session             Session[]
+  User_meta_category  User_meta_category[]
+  User_meta           User_meta_intern?
+  User_meta_recruiter User_meta_recruiter?
+}
+
+model User_meta_intern {
+  userId       String  @id(map: "user_meta_rec_pkey")
+  personal_web String  @db.VarChar(150)
+  github       String? @db.VarChar(150)
+  twitter      String? @db.VarChar(150)
+  linkedin     String  @db.VarChar(150)
+  other        String? @db.VarChar(150)
+  resume       String  @db.VarChar(200)
+  User         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User_meta_recruiter {
+  userId   String  @id(map: "user_meta_pkey")
+  company  String  @db.VarChar(150)
+  website  String  @db.VarChar(150)
+  github   String? @db.VarChar(150)
+  twitter  String? @db.VarChar(150)
+  linkedin String? @db.VarChar(150)
+  other    String? @db.VarChar(150)
+  employee Int
+  country  String  @db.VarChar(120)
+  User     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User_meta_category {
+  userId     String
+  categoryId String
+  Category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, categoryId], map: "user_meta_category_pkey")
+  @@index([userId], map: "idx_umc_userid")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Applicant {
+  userid      String
+  postid      String
+  createdAt   DateTime
+  description String           @db.VarChar(250)
+  status      Applicant_status @default(SUBMITTED)
+  Post        Post             @relation(fields: [postid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User        User             @relation(fields: [userid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([userid, postid], map: "applicant_pkey")
+  @@index([postid], map: "idx_applicant_pid")
+  @@index([userid], map: "idx_applicant_uid")
+}
+
+enum Role {
+  INTERN
+  RECRUITER
+  ADMIN
+}
+
+enum Applicant_status {
+  SUBMITTED
+  SELECTED
+}
+
+enum User_status {
+  ACTIVE
+  BANNED
+}
+
+enum Status {
+  OPEN
+  CLOSED
+}
