@@ -144,6 +144,16 @@ model Applicant {
   @@index([userid], map: "idx_applicant_uid")
 }
 
+model Newsletters {
+  id       String     @id @default(cuid())
+  email    String 
+  type     Newsletter_type
+  @@index([email], map: "idx_Newslatter_email")
+}
+
+enum Newsletter_type {
+  PRODUCT_LAUNCH
+}
 enum Role {
   INTERN
   RECRUITER
