@@ -14,7 +14,7 @@ export const updatePost = async (req, res) => {
       return res.status(400).json({ err: "Provide Status Open or Closed" });
   try {
     const Post_Owner = await postOwner(pid);
-    if (Post_Owner[0].userid != uid)
+    if (Post_Owner[0].user_id != uid)
       return res.status(401).json({ err: "Unauthorized action" });
     const update_Posts = await update_Post(
       pid,
@@ -39,7 +39,7 @@ export const updatePost_addcategory = async (req, res) => {
   const uid = res.locals.uid;
   try {
     const Post_Owner = await postOwner(pid);
-    if (Post_Owner[0].userid != uid)
+    if (Post_Owner[0].user_id != uid)
       return res.status(401).json({ err: "Unauthorized action" });
     const check = await checkif_category_added(pid, category);
 
@@ -62,7 +62,7 @@ export const updatePost_delcategory = async (req, res) => {
   const uid = res.locals.uid;
   try {
     const Post_Owner = await postOwner(pid);
-    if (Post_Owner[0].userid != uid)
+    if (Post_Owner[0].user_id != uid)
       return res.status(401).json({ err: "Unauthorized action" });
     const check = await checkif_category_added(pid, category);
 

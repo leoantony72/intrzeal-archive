@@ -1,7 +1,7 @@
 import { prisma } from "../../../client.js";
 
 export const del_post = async (pid) => {
-  return await prisma.Post.delete({
+  return await prisma.Posts.delete({
     where: {
       id: pid,
     },
@@ -11,5 +11,5 @@ export const del_post = async (pid) => {
   });
 };
 export const p_stat = async () => {
-  return await prisma.$queryRaw`SELECT p.status,COUNT(p.status) AS posts FROM "Post" AS p GROUP BY p.status`;
+  return await prisma.$queryRaw`SELECT p.status,COUNT(p.status) AS posts FROM "Posts" AS p GROUP BY p.status`;
 };

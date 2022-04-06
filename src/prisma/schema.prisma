@@ -8,12 +8,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Account {
+model Accounts {
   id                 String  @id @default(cuid())
-  userId             String
+  user_id             String
   type               String
   provider           String
-  providerAccountId  String
+  provider_account_id  String
   refresh_token      String?
   access_token       String?
   expires_at         Int?
@@ -23,72 +23,72 @@ model Account {
   session_state      String?
   oauth_token_secret String?
   oauth_token        String?
-  User               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User               Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([provider, provider_account_id])
 }
 
-model Category {
+model Categories {
   id                 String               @id @default(cuid())
   category           String               @unique @db.VarChar(100)
-  Post_category      Post_category[]
-  User_meta_category User_meta_category[]
+  Post_category      Post_categories[]
+  User_meta_category User_meta_categories[]
 
   @@index([id], map: "idx_categoryid")
 }
 
-model Post {
+model Posts {
   id             String          @id @default(cuid())
-  userid         String
+  user_id         String
   title          String          @db.VarChar(200)
   description   String          @db.VarChar(1000)
   salary         Decimal         @db.Decimal
   job_experience Decimal         @db.Decimal
   status         Status          @default(OPEN)
-  createdat      DateTime
-  User           User            @relation(fields: [userid], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Applicant      Applicant[]
-  Post_category  Post_category[]
+  created_at      DateTime
+  User           Users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Applicant      Applicants[]
+  Post_category  Post_categories[]
 
   @@index([id], map: "idx_postid")
 }
 
-model Post_category {
+model Post_categories {
   post_id     String
   category_id String
-  Category    Category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Post        Post     @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Post_category_postid_fkey")
+  Category    Categories @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Post        Posts     @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Post_category_postid_fkey")
 
   @@id([post_id, category_id], map: "post_category_pkey")
   @@index([category_id], map: "idx_p_categoryid")
 }
 
-model Session {
+model Sessions {
   id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
+  session_token String   @unique
+  user_id       String
   expires      DateTime
-  User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User         Users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
-model User {
+model Users {
   id                  String               @id @default(cuid())
   name                String?
   email               String?              @unique
-  emailVerified       DateTime?
+  email_verified      DateTime?
   image               String?
   role                Role                 @default(INTERN)
   status              User_status          @default(ACTIVE)
-  Account             Account[]
-  Applicant           Applicant[]
-  Post                Post[]
-  Session             Session[]
-  User_meta_category  User_meta_category[]
-  User_meta           User_meta_intern?
-  User_meta_recruiter User_meta_recruiter?
+  Account             Accounts[]
+  Applicant           Applicants[]
+  Post                Posts[]
+  Session             Sessions[]
+  User_meta_category  User_meta_categories[]
+  User_meta           User_meta_interns?
+  User_meta_recruiter User_meta_recruiters?
 }
 
-model User_meta_intern {
+model User_meta_interns {
   user_id       String  @id(map: "user_meta_rec_pkey")
   personal_web String  @db.VarChar(150)
   github       String? @db.VarChar(150)
@@ -96,10 +96,10 @@ model User_meta_intern {
   linkedin     String  @db.VarChar(150)
   other        String? @db.VarChar(150)
   resume       String  @db.VarChar(200)
-  User         User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  User         Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
-model User_meta_recruiter {
+model User_meta_recruiters {
   user_id   String  @id(map: "user_meta_pkey")
   company  String  @db.VarChar(150)
   website  String  @db.VarChar(150)
@@ -109,20 +109,20 @@ model User_meta_recruiter {
   other    String? @db.VarChar(150)
   employee Int
   country  String  @db.VarChar(120)
-  User     User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  User     Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
-model User_meta_category {
-  userId     String
-  categoryId String
-  Category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model User_meta_categories {
+  user_id     String
+  category_id String
+  Category   Categories @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  User       Users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@id([userId, categoryId], map: "user_meta_category_pkey")
-  @@index([userId], map: "idx_umc_userid")
+  @@id([user_id, category_id], map: "user_meta_category_pkey")
+  @@index([user_id], map: "idx_umc_userid")
 }
 
-model VerificationToken {
+model VerificationTokens {
   identifier String
   token      String   @unique
   expires    DateTime
@@ -130,20 +130,30 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Applicant {
-  userid      String
-  postid      String
-  createdAt   DateTime
+model Applicants {
+  user_id      String
+  post_id      String
+  created_at   DateTime
   description String           @db.VarChar(250)
   status      Applicant_status @default(SUBMITTED)
-  Post        Post             @relation(fields: [postid], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  User        User             @relation(fields: [userid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Post        Posts            @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User        Users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@id([userid, postid], map: "applicant_pkey")
-  @@index([postid], map: "idx_applicant_pid")
-  @@index([userid], map: "idx_applicant_uid")
+  @@id([user_id, post_id], map: "applicant_pkey")
+  @@index([post_id], map: "idx_applicant_pid")
+  @@index([user_id], map: "idx_applicant_uid")
 }
 
+model Newsletters {
+  id       String     @id @default(cuid())
+  email    String 
+  type     Newsletter_type
+  @@index([email], map: "idx_Newslatter_email")
+}
+
+enum Newsletter_type {
+  PRODUCT_LAUNCH
+}
 enum Role {
   INTERN
   RECRUITER

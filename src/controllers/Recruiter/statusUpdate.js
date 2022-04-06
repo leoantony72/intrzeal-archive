@@ -12,7 +12,7 @@ export const updateJob_Status = async (req, res) => {
   const uid = res.locals.uid;
   try {
     const Post_Owner = await postOwner(pid);
-    if (Post_Owner[0].userid != uid)
+    if (Post_Owner[0].user_id != uid)
       return res.status(401).json({ err: "Unauthorized action" });
     const update_Status = await updateStatus(pid, uid, status);
     if (!update_Status[0].id)

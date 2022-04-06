@@ -30,8 +30,8 @@ export const addUser_skill = async (req, res) => {
       return res.status(400).json({ err: "Category/skill Alredy Added" });
 
     const adduser_skill = await addUserskill(uid, category);
-    if (!adduser_skill.userId)
-      res.status(400).json({ err: "Something Went Wrong" });
+    if (!adduser_skill.user_id)
+      return res.status(400).json({ err: "Something Went Wrong" });
 
     return res.status(201).json({ success: "Category/skill added" });
   } catch (err) {
@@ -52,7 +52,7 @@ export const delUser_skill = async (req, res) => {
       return res.status(400).json({ err: "Category/skill Not Added" });
 
     const deluser_skills = await delUser_skills(uid, category);
-    // if (!deluser_skills.userId)
+    // if (!deluser_skills.user_id)
     //   return res.status(400).json( { err: "Something Went Wrong" } );
 
     return res.status(201).json({ success: "Category/skill deleted" });

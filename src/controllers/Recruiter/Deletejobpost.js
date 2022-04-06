@@ -6,7 +6,7 @@ export const deletePost = async (req, res) => {
   const uid = res.locals.uid;
   try {
     const Post_Owner = await postOwner(pid);
-    if (Post_Owner[0].userid != uid)
+    if (Post_Owner[0].user_id != uid)
       return res.status(401).json({ err: "Unauthorized action" });
     const delPosts = await delPost(pid, uid);
 
