@@ -23,7 +23,8 @@ export const applyPost = async (req, res) => {
       return res.status(400).json({ err: "Job Post Closed" });
 
     const applytoPost = await createApplication(uid, pid, description, date);
-    if (!applytoPost.userid)
+    console.log(applytoPost);
+    if (!applytoPost.user_id)
       return res.status(400).json({ err: "Something went wrong" });
     return res.status(201).json({ success: "Applied to job" });
   } catch (err) {

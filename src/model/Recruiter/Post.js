@@ -10,14 +10,14 @@ export const create_Post = async (
   category
 ) => {
   return await prisma.$transaction(async (prisma) => {
-    const createPost = await prisma.Post.create({
+    const createPost = await prisma.Posts.create({
       data: {
-        userid: uid,
+        user_id: uid,
         title: title,
         description: description,
         salary: salary,
         job_experience: job_experience,
-        createdat: date,
+        created_at: date,
       },
       select: {
         id: true,
@@ -25,7 +25,7 @@ export const create_Post = async (
     });
     const postid = createPost.id;
 
-    const addCategory = await prisma.Post_category.createMany({
+    const addCategory = await prisma.Post_categories.createMany({
       data: [
         { post_id: postid, category_id: category[0] },
         { post_id: postid, category_id: category[1] || category[0] },
@@ -47,29 +47,29 @@ export const update_Post = async (
   job_experience,
   status
 ) => {
-  return await prisma.$queryRaw`UPDATE "Post" SET title=${title},description=${description},salary=${salary},job_experience=${job_experience},status=${status} WHERE id =${pid} AND userid=${uid} RETURNING id`;
+  return await prisma.$queryRaw`UPDATE "Posts" SET title=${title},description=${description},salary=${salary},job_experience=${job_experience},status=${status} WHERE id =${pid} AND user_id=${uid} RETURNING id`;
 };
 
 export const updateStatus = async (pid, uid, status) => {
-  return await prisma.$queryRaw`UPDATE "Post" SET status=${status} WHERE id = ${pid} AND userid=${uid} RETURNING id`;
+  return await prisma.$queryRaw`UPDATE "Posts" SET status=${status} WHERE id = ${pid} AND user_id=${uid} RETURNING id`;
 };
 
 export const delPost = async (pid, uid) => {
-  return await prisma.post.deleteMany({
+  return await prisma.posts.deleteMany({
     where: {
       id: pid,
-      userid: uid,
+      user_id: uid,
     },
   });
 };
 
 export const postOwner = async (pid) => {
-  return await prisma.Post.findMany({
+  return await prisma.Posts.findMany({
     where: {
       id: pid,
     },
     select: {
-      userid: true,
+      user_id: true,
     },
   });
 };

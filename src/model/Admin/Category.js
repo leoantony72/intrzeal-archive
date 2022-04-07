@@ -1,7 +1,7 @@
 import { prisma } from "../../../client.js";
 
 export const addcategory = async (category) => {
-  return await prisma.category.create({
+  return await prisma.categories.create({
     data: {
       category: category,
     },

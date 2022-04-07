@@ -1,29 +1,29 @@
 import { prisma } from "../../../client.js";
 
 export const addUserskill = async (uid, category) => {
-  return await prisma.User_meta_category.create({
+  return await prisma.User_meta_categories.create({
     data: {
-      userId: uid,
-      categoryId: category[0],
+      user_id: uid,
+      category_id: category[0],
     },
     select: {
-      userId: true,
+      user_id: true,
     },
   });
 };
 
 export const checkif_user_added_category = async (uid, category) => {
-  return await prisma.$queryRaw`SELECT COUNT("userId") FROM "User_meta_category" WHERE "userId"=${uid} AND "categoryId"=${category[0]}`;
+  return await prisma.$queryRaw`SELECT COUNT("user_id") FROM "User_meta_categories" WHERE "user_id"=${uid} AND "category_id"=${category[0]}`;
 };
 
 export const getUser_skills = async (uid) => {
-  return await prisma.$queryRaw`SELECT uc."categoryId",c."category" FROM "User_meta_category" AS uc JOIN "Category" c ON uc."categoryId" = c."id" WHERE uc."userId"=${uid}`;
+  return await prisma.$queryRaw`SELECT uc."category_id",c."category" FROM "User_meta_categories" AS uc JOIN "Categories" c ON uc."category_id" = c."id" WHERE uc."user_id"=${uid}`;
 };
 export const delUser_skills = async (uid, category) => {
-  return await prisma.User_meta_category.deleteMany({
+  return await prisma.User_meta_categories.deleteMany({
     where: {
-      userId: uid,
-      categoryId: category[0],
+      user_id: uid,
+      category_id: category[0],
     },
   });
 };

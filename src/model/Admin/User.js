@@ -1,13 +1,13 @@
 import { prisma } from "../../../client.js";
 
 export const getUser = async () => {
-  return await prisma.User.findMany({
+  return await prisma.Users.findMany({
     select: {
       id: true,
       name: true,
       image: true,
       email: true,
-      emailVerified: true,
+      email_verified: true,
       role: true,
       status: true,
     },
@@ -15,7 +15,7 @@ export const getUser = async () => {
 };
 
 export const getUser_by_ID = async (uid) => {
-  return await prisma.User.findMany({
+  return await prisma.Users.findMany({
     where: {
       id: uid,
     },
@@ -24,7 +24,7 @@ export const getUser_by_ID = async (uid) => {
       name: true,
       image: true,
       email: true,
-      emailVerified: true,
+      email_verified: true,
       role: true,
       status: true,
     },
@@ -32,7 +32,7 @@ export const getUser_by_ID = async (uid) => {
 };
 
 export const getUser_by_role = async (role) => {
-  return await prisma.User.findMany({
+  return await prisma.Users.findMany({
     where: {
       role: role,
     },
@@ -47,7 +47,7 @@ export const getUser_by_role = async (role) => {
 };
 
 export const ban = async (uid) => {
-  return await prisma.User.update({
+  return await prisma.Users.update({
     where: {
       id: uid
     },
@@ -61,7 +61,7 @@ export const ban = async (uid) => {
 };
 
 export const unban = async (uid) => {
-  return await prisma.User.update({
+  return await prisma.Users.update({
     where: {
       id: uid
     },
@@ -75,5 +75,5 @@ export const unban = async (uid) => {
 };
 
 export const u_stat = async () => {
-  return await prisma.$queryRaw`SELECT u.role,COUNT(u.id) AS USERS FROM "User" AS u GROUP BY u.role`;
+  return await prisma.$queryRaw`SELECT u.role,COUNT(u.id) AS USERS FROM "Users" AS u GROUP BY u.role`;
 };
