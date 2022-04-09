@@ -11,10 +11,12 @@ export const getUser_skill = async (req, res) => {
   try {
     const getuser_skill = await getUser_skills(uid);
 
-    return res.status(200).json({ success: getuser_skill });
+    return res.status(200).json({ status: "success", data: getuser_skill });
   } catch (err) {
     console.log(err.message);
-    return res.status(400).json({ err: "Something Went Wrong" });
+    return res
+      .status(400)
+      .json({ status: "failed", err: "Something Went Wrong" });
   }
 };
 
@@ -27,16 +29,24 @@ export const addUser_skill = async (req, res) => {
 
     const n_exist = check[0].count;
     if (n_exist != 0)
-      return res.status(400).json({ err: "Category/skill Alredy Added" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Category/skill Alredy Added" });
 
     const adduser_skill = await addUserskill(uid, category);
     if (!adduser_skill.user_id)
-      return res.status(400).json({ err: "Something Went Wrong" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something Went Wrong" });
 
-    return res.status(201).json({ success: "Category/skill added" });
+    return res
+      .status(201)
+      .json({ status: "success", data: "Category/skill added" });
   } catch (err) {
     console.log(err.message);
-    return res.status(400).json({ err: "Something Went Wrong" });
+    return res
+      .status(400)
+      .json({ status: "failed", err: "Something Went Wrong" });
   }
 };
 
@@ -49,15 +59,21 @@ export const delUser_skill = async (req, res) => {
 
     const n_exist = check[0].count;
     if (n_exist == 0)
-      return res.status(400).json({ err: "Category/skill Not Added" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Category/skill Not Added" });
 
     const deluser_skills = await delUser_skills(uid, category);
     // if (!deluser_skills.user_id)
     //   return res.status(400).json( { err: "Something Went Wrong" } );
 
-    return res.status(201).json({ success: "Category/skill deleted" });
+    return res
+      .status(201)
+      .json({ status: "success", data: "Category/skill deleted" });
   } catch (err) {
     console.log(err.message);
-    return res.status(400).json({ err: "Something Went Wrong" });
+    return res
+      .status(400)
+      .json({ status: "failed", err: "Something Went Wrong" });
   }
 };

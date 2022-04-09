@@ -5,11 +5,15 @@ export const banUsers = async (req, res) => {
   try {
     const banuser = await ban(uid);
     if (!banuser.id)
-      return res.status(400).json({ err: "Something went wrong" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something went wrong" });
 
-    return res.status(201).json({ success: "User :" + uid + " Banned" });
+    return res
+      .status(201)
+      .json({ status: "success", data: `User :${uid} Banned` });
   } catch (err) {
-    return res.status(400).json({ err: err });
+    return res.status(400).json({ status: "failed", err: err });
   }
 };
 
@@ -18,11 +22,15 @@ export const unbanUsers = async (req, res) => {
   try {
     const unbanuser = await unban(uid);
     if (!unbanuser.id)
-      return res.status(400).json({ err: "Something went wrong" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something went wrong" });
 
-    return res.status(201).json({ success: "User :" + uid + " Unbanned" });
+    return res
+      .status(201)
+      .json({ status: "success", data: `User : ${uid} Unbanned` });
   } catch (err) {
     console.log(err.message);
-    return res.status(400).json({ err: err });
+    return res.status(400).json({ status: "failed", err: err });
   }
 };

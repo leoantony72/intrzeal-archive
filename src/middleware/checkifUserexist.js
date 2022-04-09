@@ -5,6 +5,8 @@ export const checkifUserexist = async (req, res, next) => {
   const check = await checkif_Userexist(uid);
   const n_exist = check[0].count;
   if (n_exist === 0)
-    return res.status(400).json({ err: `User :${uid} Not Found` });
+    return res
+      .status(400)
+      .json({ status: "failed", err: `User :${uid} Not Found` });
   next();
 };
