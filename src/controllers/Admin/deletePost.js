@@ -6,10 +6,14 @@ export const deletePost = async (req, res) => {
   try {
     const delPost = await del_post(pid);
     if (!delPost.id)
-      return res.status(400).json({ err: "Something went wrong" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something went wrong" });
 
-    return res.status(200).json({ success: "Job Post Deleted" });
+    return res
+      .status(200)
+      .json({ status: "success", data: "Job Post Deleted" });
   } catch (err) {
-    return res.status(400).json({ err: err });
+    return res.status(400).json({ status: "failed", err: err });
   }
 };

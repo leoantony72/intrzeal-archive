@@ -11,11 +11,15 @@ export const updatePost = async (req, res) => {
   const uid = res.locals.uid;
   if (status != "OPEN")
     if (status != "CLOSED")
-      return res.status(400).json({ err: "Provide Status Open or Closed" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Provide Status Open or Closed" });
   try {
     const Post_Owner = await postOwner(pid);
     if (Post_Owner[0].user_id != uid)
-      return res.status(401).json({ err: "Unauthorized action" });
+      return res
+        .status(401)
+        .json({ status: "failed", err: "Unauthorized action" });
     const update_Posts = await update_Post(
       pid,
       uid,
@@ -26,10 +30,14 @@ export const updatePost = async (req, res) => {
       status
     );
     if (!update_Posts[0].id)
-      return res.status(400).json({ err: "Something Went Wrong" });
-    return res.status(201).json({ success: "Job Post Updated" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something Went Wrong" });
+    return res
+      .status(201)
+      .json({ status: "success", data: "Job Post Updated" });
   } catch (err) {
-    return res.status(400).json({ err: err.message });
+    return res.status(400).json({ status: "failed", err: err.message });
   }
 };
 
@@ -40,19 +48,25 @@ export const updatePost_addcategory = async (req, res) => {
   try {
     const Post_Owner = await postOwner(pid);
     if (Post_Owner[0].user_id != uid)
-      return res.status(401).json({ err: "Unauthorized action" });
+      return res
+        .status(401)
+        .json({ status: "failed", err: "Unauthorized action" });
     const check = await checkif_category_added(pid, category);
 
     const n_exist = check[0].count;
     if (n_exist != 0)
-      return res.status(400).json({ err: "Category Alredy Added" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Category Alredy Added" });
     const updatePost = await add_category(pid, category);
     if (!updatePost[0].post_id)
-      return res.status(400).json({ err: "Something Went Wrong" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something Went Wrong" });
 
-    return res.status(201).json({ success: "Category Added" });
+    return res.status(201).json({ status: "success", data: "Category Added" });
   } catch (err) {
-    return res.status(400).json({ err: err.message });
+    return res.status(400).json({ status: "failed", err: err.message });
   }
 };
 export const updatePost_delcategory = async (req, res) => {
@@ -63,18 +77,26 @@ export const updatePost_delcategory = async (req, res) => {
   try {
     const Post_Owner = await postOwner(pid);
     if (Post_Owner[0].user_id != uid)
-      return res.status(401).json({ err: "Unauthorized action" });
+      return res
+        .status(401)
+        .json({ status: "failed", err: "Unauthorized action" });
     const check = await checkif_category_added(pid, category);
 
     const n_exist = check[0].count;
     if (n_exist != 1)
-      return res.status(400).json({ err: "Category Not Added" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Category Not Added" });
     const del_category = await delCategory(pid, category);
     if (!del_category[0].post_id)
-      return res.status(400).json({ err: "Something Went Wrong" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something Went Wrong" });
 
-    return res.status(200).json({ success: "Category deleted" });
+    return res
+      .status(200)
+      .json({ status: "success", data: "Category deleted" });
   } catch (err) {
-    return res.status(400).json({ err: err.message });
+    return res.status(400).json({ status: "failed", err: err.message });
   }
 };

@@ -7,11 +7,15 @@ export const deletePost = async (req, res) => {
   try {
     const Post_Owner = await postOwner(pid);
     if (Post_Owner[0].user_id != uid)
-      return res.status(401).json({ err: "Unauthorized action" });
+      return res
+        .status(401)
+        .json({ status: "failed", err: "Unauthorized action" });
     const delPosts = await delPost(pid, uid);
 
-    return res.status(200).json({ success: "Job Post Deleted" });
+    return res
+      .status(200)
+      .json({ status: "success", data: "Job Post Deleted" });
   } catch (err) {
-    return res.status(400).json({ err: err.message });
+    return res.status(400).json({ status: "failed", err: err.message });
   }
 };

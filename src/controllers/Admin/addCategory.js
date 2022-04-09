@@ -6,12 +6,16 @@ export const addCategory = async (req, res) => {
   try {
     const createcategory = await addcategory(category);
     if (!createcategory.id)
-      return res.status(400).json({ err: "Something went wrong" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something went wrong" });
 
-    return res.status(201).json({ success: "Category Added" });
+    return res.status(201).json({ status: "success", data: "Category Added" });
   } catch (err) {
     if (err.code == "P2002" && err.meta.target[0] == "category")
-      return res.status(400).json({ err: `${category} Alredy Added` });
-    return res.status(400).json({ err: err.message });
+      return res
+        .status(400)
+        .json({ status: "failed", err: `${category} Alredy Added` });
+    return res.status(400).json({ status: "failed", err: err.message });
   }
 };

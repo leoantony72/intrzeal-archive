@@ -17,12 +17,16 @@ export const createPost = async (req, res) => {
       category
     );
     if (!result.createPost.id)
-      return res.status(400).json({ err: "Something Went Wrong" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something Went Wrong" });
 
-    return res.status(201).json({ success: "Job Post Added" });
+    return res.status(201).json({ status: "success", data: "Job Post Added" });
   } catch (err) {
     console.log(err.message);
-    return res.status(400).json({ err: "Something Went Wrong" });
+    return res
+      .status(400)
+      .json({ status: "failed", err: "Something Went Wrong" });
   }
 };
 

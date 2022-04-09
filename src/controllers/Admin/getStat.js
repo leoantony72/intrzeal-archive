@@ -7,9 +7,12 @@ export const getStat = async (req, res) => {
     const post_stats = await p_stat();
     return res
       .status(200)
-      .json({ success: { user: user_stats, post: post_stats } });
+      .json({
+        status: "success",
+        data: { user: user_stats, post: post_stats },
+      });
   } catch (err) {
     console.log(err.message);
-    return res.status(400).json({ err: err });
+    return res.status(400).json({ status: "failed", err: err });
   }
 };

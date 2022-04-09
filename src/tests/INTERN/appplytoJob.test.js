@@ -10,7 +10,6 @@ describe("Apply to Job Post", () => {
           .send({
             description: "testing description for job apply route",
           });
-        console.log(response);
         expect(response.statusCode).toBe(201);
       });
     });

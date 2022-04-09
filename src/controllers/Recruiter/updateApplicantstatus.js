@@ -10,22 +10,29 @@ export const updateApplicantstatus = async (req, res) => {
 
   const loggedIn_user = res.locals.uid;
   try {
-
     const Post_Owner = await postOwner(pid);
     if (Post_Owner[0].user_id != loggedIn_user)
-      return res.status(401).json({ err: "Unauthorized action" });
+      return res
+        .status(401)
+        .json({ status: "failed", err: "Unauthorized action" });
 
     const checkif_user_applied = await checkIfUserApplied(uid);
     if (!checkif_user_applied[0].user_id)
-      return res.status(400).json({ err: "User Not Applied" });
+      return res
+        .status(400)
+        .json({ status: "failed", err: "User Not Applied" });
     const updatePost = await updateApplicant_Status(pid, uid);
 
     if (!updatePost[0].user_id)
-      return res.status(400).json({ err: "Something Went Wrong" });
-      
+      return res
+        .status(400)
+        .json({ status: "failed", err: "Something Went Wrong" });
+
     //@@send the user a Email with the link to chat with the recruiter
-    return res.status(201).json({ success: `User Selected For The Job` });
+    return res
+      .status(201)
+      .json({ status: "success", data: `User Selected For The Job` });
   } catch (err) {
-    return res.status(400).json({ err: err.message });
+    return res.status(400).json({ status: "failed", err: err.message });
   }
 };
