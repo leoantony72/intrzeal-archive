@@ -1,29 +1,27 @@
-import {
-  checkifApplied,
-  createApplication,
-  getJobStatus,
-} from "../../model/Intern/Applicant.js";
+import { ApplicantService } from "../../services/Intern/ApplicantService.js";
+
+const ApplicantServiceInstance = new ApplicantService();
 
 export const applyPost = async (req, res) => {
-  const date = new Date();
   const { pid } = req.params;
   const { description } = req.body;
 
   //get userid from session
   const uid = res.locals.uid;
   try {
-    //checks if user applied to job post
-    const checkifapplied = await checkifApplied(uid, pid);
-    if (checkifapplied[0]) {
-      return res.status(400).json({ status: "failed", err: "Alredy Applied" });
+    const apply = await ApplicantServiceInstance.applytoPost({
+      uid: uid,
+      pid: pid,
+      description: description,
+    });
+    if (apply.applied === true) {
+      return res.status(400).json({ status: "failed", err: "Already Applied" });
     }
 
-    const JobStatus = await getJobStatus(pid);
-    if (JobStatus[0].status === "CLOSED")
+    if (apply.closed === true)
       return res.status(400).json({ status: "failed", err: "Job Post Closed" });
 
-    const applytoPost = await createApplication(uid, pid, description, date);
-    if (!applytoPost.user_id)
+    if (!apply.applytoPost.user_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something went wrong" });

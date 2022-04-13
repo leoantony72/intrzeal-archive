@@ -1,17 +1,19 @@
 import { prisma } from "../../../client.js";
 
-export const create_Post = async (
+export const create_Post = async ({
+  id,
   uid,
   title,
   description,
   salary,
   job_experience,
   date,
-  category
-) => {
+  category,
+}) => {
   return await prisma.$transaction(async (prisma) => {
     const createPost = await prisma.Posts.create({
       data: {
+        id: id,
         user_id: uid,
         title: title,
         description: description,

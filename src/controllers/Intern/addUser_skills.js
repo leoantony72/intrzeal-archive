@@ -1,17 +1,13 @@
-import {
-  addUserskill,
-  checkif_user_added_category,
-  getUser_skills,
-  delUser_skills,
-} from "../../model/Intern/User_meta_category.js";
+import { UserCategoryService } from "../../services/Intern/UserCategoryService.js";
+
+const UserCategoryServiceInstance = new UserCategoryService();
 
 export const getUser_skill = async (req, res) => {
   //get userid from session
   const uid = res.locals.uid;
   try {
-    const getuser_skill = await getUser_skills(uid);
-
-    return res.status(200).json({ status: "success", data: getuser_skill });
+    const getSkills = await UserCategoryServiceInstance.getSkills({ uid: uid });
+    return res.status(200).json({ status: "success", data: getSkills });
   } catch (err) {
     console.log(err.message);
     return res
@@ -25,16 +21,17 @@ export const addUser_skill = async (req, res) => {
   //get userid from session
   const uid = res.locals.uid;
   try {
-    const check = await checkif_user_added_category(uid, category);
+    const addSkill = await UserCategoryServiceInstance.addSkills({
+      uid: uid,
+      category: category,
+    });
 
-    const n_exist = check[0].count;
-    if (n_exist != 0)
+    if (addSkill.added === true)
       return res
         .status(400)
-        .json({ status: "failed", err: "Category/skill Alredy Added" });
+        .json({ status: "failed", err: "Category/skill Already Added" });
 
-    const adduser_skill = await addUserskill(uid, category);
-    if (!adduser_skill.user_id)
+    if (!addSkill.adduser_skill.user_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });
@@ -55,15 +52,16 @@ export const delUser_skill = async (req, res) => {
   //get userid from session
   const uid = res.locals.uid;
   try {
-    const check = await checkif_user_added_category(uid, category);
+    const delSkill = await UserCategoryServiceInstance.delSkills({
+      uid: uid,
+      category: category,
+    });
 
-    const n_exist = check[0].count;
-    if (n_exist == 0)
+    if (!delSkill.added === true)
       return res
         .status(400)
         .json({ status: "failed", err: "Category/skill Not Added" });
 
-    const deluser_skills = await delUser_skills(uid, category);
     // if (!deluser_skills.user_id)
     //   return res.status(400).json( { err: "Something Went Wrong" } );
 

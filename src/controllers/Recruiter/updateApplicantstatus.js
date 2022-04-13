@@ -1,8 +1,5 @@
-import {
-  checkIfUserApplied,
-  updateApplicant_Status,
-} from "../../model/Recruiter/Applicant.js";
-import { postOwner } from "../../model/Recruiter/Post.js";
+import { ApplicantService } from "../../services/Recruiter/ApplicantService.js";
+const ApplicantServiceInstance = new ApplicantService();
 
 export const updateApplicantstatus = async (req, res) => {
   const { pid } = req.params;
@@ -10,20 +7,22 @@ export const updateApplicantstatus = async (req, res) => {
 
   const loggedIn_user = res.locals.uid;
   try {
-    const Post_Owner = await postOwner(pid);
-    if (Post_Owner[0].user_id != loggedIn_user)
+    const updateStatus = await ApplicantServiceInstance.updateApplicantStatus({
+      uid: uid,
+      pid: pid,
+      loggedIn_user: loggedIn_user,
+    });
+    if (!updateStatus.owner === true)
       return res
         .status(401)
         .json({ status: "failed", err: "Unauthorized action" });
 
-    const checkif_user_applied = await checkIfUserApplied(uid);
-    if (!checkif_user_applied[0].user_id)
+    if (!updateStatus.applied === true)
       return res
         .status(400)
         .json({ status: "failed", err: "User Not Applied" });
-    const updatePost = await updateApplicant_Status(pid, uid);
 
-    if (!updatePost[0].user_id)
+    if (!updateStatus.applicant[0].user_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });

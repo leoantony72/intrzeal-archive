@@ -1,46 +1,51 @@
 import request from "supertest";
 import app from "../../app.js";
 
+const uid = "12$$";
 describe("Ban/UnBan Users", () => {
   describe("api/admin/ban : ", () => {
-    describe("Ban User : VALID UID", () => {
-      test("/ban : should return 200 status code", async () => {
-        const response = await request(app).put("/api/admin/ban?uid=155");
-        expect(response.statusCode).toBe(200);
-      });
+    const BASE_URL = "/api/admin/users/ban/";
+    test("Ban User : VALID UID : should return 200 status code", async () => {
+      const res = await request(app).put(`${BASE_URL}${uid}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data).toBe(`User :${uid} Banned`);
     });
-    describe("Ban User : INVALID UID", () => {
-      test("/ban : should return 200 status code", async () => {
-        const response = await request(app).put("/api/admin/ban?uid=15");
-        expect(response.statusCode).toBe(400);
-      });
+    test("Ban User : INVALID UID : should return 400 status code", async () => {
+      const id = "12";
+      const res = await request(app).put(`${BASE_URL}${id}`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toBe(`User :${id} Not Found`);
     });
-    describe("Ban User : NO UID Provided", () => {
-      test("/ban : should return 200 status code", async () => {
-        const response = await request(app).put("/api/admin/ban");
-        expect(response.statusCode).toBe(400);
-      });
+    test("Ban User : NO UID Provided : should return 400 status code", async () => {
+      const res = await request(app).put(`${BASE_URL}`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toBe(`UID Not Provided`);
     });
   });
 
   describe("api/admin/unban : ", () => {
-    describe("UnBan User : VALID UID", () => {
-      test("/unban : should return 400 status code", async () => {
-        const response = await request(app).put("/api/admin/unban?uid=155");
-        expect(response.statusCode).toBe(200);
-      });
+    const BASE_URL = "/api/admin/users/unban/";
+    test("UnBan User : VALID UID : should return 200 status code", async () => {
+      const res = await request(app).put(`${BASE_URL}${uid}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data).toBe(`User :${uid} Unbanned`);
     });
-    describe("UnBan User : INVALID UID", () => {
-      test("/unban : should return 400 status code", async () => {
-        const response = await request(app).put("/api/admin/unban?uid=15");
-        expect(response.statusCode).toBe(400);
-      });
+    test("UnBan User : INVALID UID : should return 400 status code", async () => {
+      const id = "211";
+      const res = await request(app).put(`${BASE_URL}${id}`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toBe(`User :${id} Not Found`);
     });
-    describe("UnBan User : NO UID Provided", () => {
-      test("/unban : should return 400 status code", async () => {
-        const response = await request(app).put("/api/admin/unban");
-        expect(response.statusCode).toBe(400);
-      });
+    test("UnBan User : NO UID Provided : should return 400 status code", async () => {
+      const res = await request(app).put(`${BASE_URL}`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toBe(`UID Not Provided`);
     });
   });
 });

@@ -7,13 +7,12 @@
     "schema": "src/prisma/schema.prisma"
   },
   "type": "module",
-  "jest": {
-    "testTimeout": 10000
-  },
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --silent",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest ./src/tests/commonRoutes.test.js ./src/tests/Admin/* ./src/tests/Intern/* tests/Recruiter/* --coverage ",
     "start": "nodemon -L src/server.js",
-    "dev": "nodemon -L src/server.js"
+    "dev": "nodemon -L src/server.js",
+    "migrate:dev": "npx prisma db push",
+    "schema:dev": "npx prisma db pull"
   },
   "repository": {
     "type": "git",
@@ -34,6 +33,7 @@
     "express-validator": "^6.14.0",
     "jest": "^27.5.1",
     "mongoose": "^6.2.1",
+    "nanoid": "^3.3.2",
     "pg": "^8.7.3"
   },
   "devDependencies": {

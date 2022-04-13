@@ -1,49 +1,75 @@
 import request from "supertest";
 import app from "../app.js";
 
+const uid = "12$$";
+const pid = "t4j214";
+const cid = "testid";
 describe("Common Endpoint /api/...", () => {
   describe("api/posts : ", () => {
-    describe("Get all Posts", () => {
-      test("/posts : should return 200 status code", async () => {
-        const response = await request(app).get("/api/posts");
-        expect(response.statusCode).toBe(200);
-      });
+    test("Get all Posts : should return 200 status code", async () => {
+      const res = await request(app).get("/api/posts");
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body).toHaveProperty("data");
     });
-    describe("Get Post by ID(valid)", () => {
-      test("/post/:pid : should return 200 status code", async () => {
-        const pid = "cl00kzojn00084gtm55bmlttj";
-        const response = await request(app).get(`/api/post/${pid}`);
-        expect(response.statusCode).toBe(200);
-      });
+    test("Get Posts By Category : should return 200 status code", async () => {
+      const res = await request(app).get(`/api/posts?category=${cid}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body).toHaveProperty("data");
     });
-    describe("Get Post by ID(InvalidValid)", () => {
-      test("/post/:pid : should return 400 status code", async () => {
-        const pid = "123";
-        const response = await request(app).get(`/api/post/${pid}`);
-        expect(response.statusCode).toBe(400);
-      });
+    test("Get Post by VALID ID : should return 200 status code", async () => {
+      const res = await request(app).get(`/api/posts/${pid}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body).toHaveProperty("data");
+    });
+    test("Get Post by INVALID ID : should return 400 status code", async () => {
+      const pid = "123";
+      const res = await request(app).get(`/api/posts/${pid}`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toEqual("Post Not Found");
     });
   });
+
   describe("api/category : ", () => {
-    describe("Get All Category : ", () => {
-      test("/category : should return 200 status code", async () => {
-        const response = await request(app).get("/api/category");
-        expect(response.statusCode).toBe(200);
-      });
+    test("Get All Category : should return 200 status code", async () => {
+      const res = await request(app).get("/api/category");
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body).toHaveProperty("data");
     });
-    describe("Get Category by ID(VALID) : ", () => {
-      test("/category : should return 200 status code", async () => {
-        const id = "cl0vsa4ik00008dtmiitkkt9x";
-        const response = await request(app).get(`/api/category/${id}`);
-        expect(response.statusCode).toBe(200);
-      });
+    test("Get Category by VALID ID : should return 200 status code", async () => {
+      const res = await request(app).get(`/api/category/${cid}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.data[0].id).toEqual(cid);
     });
-    describe("Get Category by ID(INVALID) : ", () => {
-      test("/category : should return 400 status code", async () => {
-        const id = "cl0vsa4ik00008dtmii";
-        const response = await request(app).get(`/api/category/${id}`);
-        expect(response.statusCode).toBe(400);
-      });
+
+    test("Get Category by INVALID ID : should return 400 status code", async () => {
+      const id = "testid12";
+      const res = await request(app).get(`/api/category/${id}`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toEqual("Category Not Found");
+    });
+  });
+  describe("/api/users/:uid/profile :", () => {
+    test("Get user Profile by VALID ID : should return 200 status code", async () => {
+      const res = await request(app).get(`/api/users/${uid}/profile`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data[0].id).toEqual(uid);
+    });
+
+    test("Get user Profile by INVALID)  ID : should return 400 status code", async () => {
+      let id = "124";
+      const res = await request(app).get(`/api/users/${id}/profile`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toEqual(`User :${id} Not Found`);
     });
   });
 });

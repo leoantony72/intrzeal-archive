@@ -1,5 +1,7 @@
 import { getPost_by_ID, get_Post, get_Post_category } from "../model/Post.js";
+import { PostService } from "../services/public_route/PostService.js";
 
+const PostServiceInstance = new PostService();
 export const getPost = async (req, res) => {
   const category = Array(req.query.category);
   var page = parseInt(req.query.page);
@@ -9,7 +11,10 @@ export const getPost = async (req, res) => {
   if (page < 0) page = 0;
   try {
     if (category[0] == undefined) {
-      const getPosts = await get_Post(page, limit);
+      const getPosts = await PostServiceInstance.getPost({
+        page: page,
+        limit: limit,
+      });
       return res.status(200).json({
         status: "success",
         current_page: page,
@@ -20,7 +25,11 @@ export const getPost = async (req, res) => {
         data: getPosts,
       });
     } else if (category.length >> 0) {
-      const getPosts = await get_Post_category(category, page, limit);
+      const getPosts = await PostServiceInstance.getPostbyCategory({
+        category: category,
+        page: page,
+        limit: limit,
+      });
       return res.status(200).json({
         status: "success",
         current_page: page,
@@ -40,7 +49,7 @@ export const getPost = async (req, res) => {
 export const getPost_by_Id = async (req, res) => {
   const { pid } = req.params;
   try {
-    const getPost = await getPost_by_ID(pid);
+    const getPost = await PostServiceInstance.getPostbyId({ pid: pid });
     if (getPost.length === 0)
       return res.status(400).json({ status: "failed", err: "Post Not Found" });
 

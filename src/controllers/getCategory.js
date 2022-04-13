@@ -1,4 +1,6 @@
-import { get_Category, getCategory_by_ID } from "../model/Category.js";
+import { CategoryService } from "../services/public_route/CategoryService.js";
+
+const CategoryServiceInstance = new CategoryService();
 
 export const getCategory = async (req, res) => {
   var page = parseInt(req.query.page);
@@ -9,7 +11,10 @@ export const getCategory = async (req, res) => {
   if (limit <= 0) limit = 10;
   if (page < 0) page = 0;
   try {
-    const getCategories = await get_Category(page, limit);
+    const getCategories = await CategoryServiceInstance.getCategory({
+      page: page,
+      limit: limit,
+    });
     return res.status(200).json({
       status: "success",
       current_page: page,
@@ -27,7 +32,9 @@ export const getCategory = async (req, res) => {
 export const getCategory_by_Id = async (req, res) => {
   const { id } = req.params;
   try {
-    const getCategory = await getCategory_by_ID(id);
+    const getCategory = await CategoryServiceInstance.getCategorybyId({
+      cid: id,
+    });
     if (getCategory.length === 0)
       return res
         .status(400)

@@ -1,9 +1,6 @@
-import {
-  getUser,
-  getUser_by_ID,
-  getUser_by_role,
-} from "../../model/Admin/User.js";
+import { UserService } from "../../services/Admin/UserService.js";
 
+const UserServiceInstance = new UserService();
 export const getUsers = async (req, res) => {
   const { role } = req.query;
   var page = parseInt(req.query.page);
@@ -20,7 +17,12 @@ export const getUsers = async (req, res) => {
           return res
             .status(400)
             .json({ status: "failed", err: "Role Not Found" });
-      const getUserbyrole = await getUser_by_role(role, page, limit);
+      const getUsersbyrole = await UserServiceInstance.getUsersbyRole({
+        role: role,
+        page: page,
+        limit: limit,
+      });
+
       return res.status(200).json({
         status: "success",
         current_page: page,
@@ -28,10 +30,13 @@ export const getUsers = async (req, res) => {
         prev_page: `http://localhost:1500/api/admin/users?page=${
           page == 0 ? 0 : page - 1
         }`,
-        data: getUserbyrole,
+        data: getUsersbyrole,
       });
     }
-    const getUsers = await getUser(page, limit);
+    const getUsers = await UserServiceInstance.getUsers({
+      page: page,
+      limit: limit,
+    });
     return res.status(200).json({
       status: "success",
       current_page: page,
@@ -49,9 +54,9 @@ export const getUsers = async (req, res) => {
 export const getUsersbyID = async (req, res) => {
   const { uid } = req.params;
   try {
-    const getUserbyID = await getUser_by_ID(uid);
+    const getUsers = await UserServiceInstance.getUserbyId({ uid: uid });
 
-    return res.status(200).json({ status: "success", data: getUserbyID });
+    return res.status(200).json({ status: "success", data: getUsers });
   } catch (err) {
     console.log(err.message);
     return res.status(400).json({ status: "failed", err: err });

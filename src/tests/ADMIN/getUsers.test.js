@@ -1,43 +1,43 @@
 import request from "supertest";
 import app from "../../app.js";
 
+const uid = "12$$";
 describe("Get Users", () => {
+  const BASE_URL = "/api/admin/users";
   describe("api/admin/users : ", () => {
-    describe("Get all users (INTERN,RECRUITER)", () => {
-      test("/users : should return 200 status code", async () => {
-        const response = await request(app).get("/api/admin/users");
-        expect(response.statusCode).toBe(200);
-      });
+    test("Get all users (INTERN,RECRUITER) : should return 200 status code", async () => {
+      const res = await request(app).get(`${BASE_URL}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body).toHaveProperty("data");
     });
-    describe("Get all users (INTERN)", () => {
-      test("/users : should return 200 status code", async () => {
-        const response = await request(app).get("/api/admin/users?role=INTERN");
-        expect(response.statusCode).toBe(200);
-      });
+    test("Get all users (INTERN): should return 200 status code", async () => {
+      const res = await request(app).get(`${BASE_URL}?role=INTERN`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body).toHaveProperty("data");
     });
-    describe("Get all users (RECRUITER)", () => {
-      test("/users : should return 200 status code", async () => {
-        const response = await request(app).get(
-          "/api/admin/users?role=RECRUITER"
-        );
-        expect(response.statusCode).toBe(200);
-      });
+    test("Get all users (RECRUITER) : should return 200 status code", async () => {
+      const res = await request(app).get(`${BASE_URL}?role=RECRUITER`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body).toHaveProperty("data");
     });
   });
-  describe("api/admin/user : ", () => {
-    describe("Get user by ID", () => {
-      describe("Valid User ID", () => {
-        test("/user?uid= : should return 200 status code", async () => {
-          const response = await request(app).get("/api/admin/user?uid=123");
-          expect(response.statusCode).toBe(200);
-        });
-      });
-      describe("InValid User ID", () => {
-        test("/user?uid= : should return 200 status code", async () => {
-          const response = await request(app).get("/api/admin/user?uid=12");
-          expect(response.statusCode).toBe(200);
-        });
-      });
+
+  describe("Get user by ID", () => {
+    test("Valid User ID: should return 200 status code", async () => {
+      const res = await request(app).get(`${BASE_URL}/${uid}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body).toHaveProperty("data");
+    });
+    test("InValid User ID : should return 400 status code", async () => {
+      const id = "1231";
+      const res = await request(app).get(`${BASE_URL}/${id}`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toBe(`User :${id} Not Found`);
     });
   });
 });

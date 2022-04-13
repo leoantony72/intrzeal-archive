@@ -1,3 +1,4 @@
+import { getUser_by_role } from "../model/Admin/User.js";
 import { checkif_Userexist } from "../model/middlewares/User.js";
 
 export const checkifUserexist = async (req, res, next) => {
@@ -10,3 +11,5 @@ export const checkifUserexist = async (req, res, next) => {
       .json({ status: "failed", err: `User :${uid} Not Found` });
   next();
 };
+
+

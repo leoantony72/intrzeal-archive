@@ -1,16 +1,18 @@
-import { ban, unban } from "../../model/Admin/User.js";
+import { UserService } from "../../services/Admin/UserService.js";
+
+const UserServiceInstance = new UserService();
 
 export const banUsers = async (req, res) => {
   const { uid } = req.params;
   try {
-    const banuser = await ban(uid);
+    const banuser = await UserServiceInstance.banUser({ uid: uid });
     if (!banuser.id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something went wrong" });
 
     return res
-      .status(201)
+      .status(200)
       .json({ status: "success", data: `User :${uid} Banned` });
   } catch (err) {
     return res.status(400).json({ status: "failed", err: err });
@@ -20,17 +22,16 @@ export const banUsers = async (req, res) => {
 export const unbanUsers = async (req, res) => {
   const { uid } = req.params;
   try {
-    const unbanuser = await unban(uid);
+    const unbanuser = await UserServiceInstance.unbanUser({ uid: uid });
     if (!unbanuser.id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something went wrong" });
 
     return res
-      .status(201)
-      .json({ status: "success", data: `User : ${uid} Unbanned` });
+      .status(200)
+      .json({ status: "success", data: `User :${uid} Unbanned` });
   } catch (err) {
-    console.log(err.message);
     return res.status(400).json({ status: "failed", err: err });
   }
 };

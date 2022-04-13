@@ -1,29 +1,28 @@
 import request from "supertest";
 import app from "../../app.js";
 
+const pid = "t4j214";
 describe("del Post", () => {
+  const BASE_URL = "/api/admin/post/";
   describe("api/admin/del-post : ", () => {
-    describe("del Post : VALID PID", () => {
-      test("/del-post : should return 200 status code", async () => {
-        const response = await request(app).delete(
-          "/api/admin/del-post?pid=cl0yhpzj3001041tmtjpeutmc"
-        );
-        expect(response.statusCode).toBe(200);
-      });
+    test("del Post : VALID PID : should return 200 status code", async () => {
+      const res = await request(app).delete(`${BASE_URL}${pid}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data).toBe("Job Post Deleted");
     });
-    describe("del Post : INVALID PID", () => {
-      test("/del-post : should return 400 status code", async () => {
-        const response = await request(app).delete(
-          "/api/admin/del-post?pid=cl0yig7nz00255htma2cp43"
-        );
-        expect(response.statusCode).toBe(400);
-      });
+    test("del Post : INVALID PID : should return 400 status code", async () => {
+      const id = "2332";
+      const res = await request(app).delete(`${BASE_URL}${id}`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toBe("Job Post Not Found");
     });
-    describe("del Post : NO PID Provided", () => {
-      test("/del-post : should return 400 status code", async () => {
-        const response = await request(app).delete("/api/admin/del-post");
-        expect(response.statusCode).toBe(400);
-      });
+    test("del Post : NO PID Provided : should return 400 status code", async () => {
+      const res = await request(app).delete(`${BASE_URL}`);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.status).toEqual("failed");
+      expect(res.body.err).toBe("Post ID Not Provided");
     });
   });
 });

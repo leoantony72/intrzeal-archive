@@ -1,5 +1,6 @@
-import { getApplied_User } from "../../model/Recruiter/Applicant.js";
-import { postOwner } from "../../model/Recruiter/Post.js";
+import { ApplicantService } from "../../services/Recruiter/ApplicantService.js";
+
+const ApplicantServiceInstance = new ApplicantService();
 
 export const getAppliedUsers = async (req, res) => {
   const { pid } = req.params;
@@ -12,13 +13,16 @@ export const getAppliedUsers = async (req, res) => {
   if (limit <= 0) limit = 10;
   if (page < 0) page = 0;
   try {
-    const Post_Owner = await postOwner(pid);
-    if (Post_Owner[0].user_id != uid)
+    const getapplieduser = await ApplicantServiceInstance.getApplied({
+      uid: uid,
+      pid: pid,
+      page: page,
+      limit: limit,
+    });
+    if (!getapplieduser.owner === true)
       return res
         .status(401)
         .json({ status: "failed", err: "Unauthorized action" });
-    const getUsers = await getApplied_User(uid, pid, page, limit);
-
     return res.status(200).json({
       status: "success",
       current_page: page,
@@ -28,7 +32,7 @@ export const getAppliedUsers = async (req, res) => {
       prev_page: `http://localhost:1500/api/recruiter/posts/${pid}/applicants?page=${
         page == 0 ? 0 : page - 1
       }`,
-      data: getUsers,
+      data: getapplieduser.getUsers,
     });
   } catch (err) {
     console.log(err.message);

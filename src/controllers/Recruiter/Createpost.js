@@ -1,22 +1,20 @@
-import { create_Post } from "../../model/Recruiter/Post.js";
-
+import { PostService } from "../../services/Recruiter/PostService.js";
+const PostServiceInstance = new PostService();
 export const createPost = async (req, res) => {
   const { title, description, salary, job_experience } = req.body;
 
   const { category } = req.body;
   const uid = res.locals.uid;
   try {
-    const date = new Date();
-    const result = await create_Post(
-      uid,
-      title,
-      description,
-      salary,
-      job_experience,
-      date,
-      category
-    );
-    if (!result.createPost.id)
+    const Create = await PostServiceInstance.createPost({
+      uid: uid,
+      title: title,
+      description: description,
+      salary: salary,
+      job_experience: job_experience,
+      category: category,
+    });
+    if (!Create.createPost.id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });

@@ -1,5 +1,6 @@
-import { postOwner, updateStatus } from "../../model/Recruiter/Post.js";
+import { PostService } from "../../services/Recruiter/PostService.js";
 
+const PostServiceInstance = new PostService();
 export const updateJob_Status = async (req, res) => {
   const { pid } = req.params;
   const { status } = req.query;
@@ -12,13 +13,18 @@ export const updateJob_Status = async (req, res) => {
       });
   const uid = res.locals.uid;
   try {
-    const Post_Owner = await postOwner(pid);
-    if (Post_Owner[0].user_id != uid)
+    const updatestatus = await PostServiceInstance.updateStatus({
+      pid: pid,
+      uid: uid,
+      status: status,
+    });
+    console.log(updatestatus)
+    if (!updatestatus.owner === true)
       return res
         .status(401)
         .json({ status: "failed", err: "Unauthorized action" });
-    const update_Status = await updateStatus(pid, uid, status);
-    if (!update_Status[0].id)
+
+    if (!updatestatus.update_Status[0].id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });

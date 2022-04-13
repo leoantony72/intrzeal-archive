@@ -1,4 +1,5 @@
-import { getAppliedPost } from "../../model/Intern/Applicant.js";
+import { ApplicantService } from "../../services/Intern/ApplicantService.js";
+const ApplicantServiceInstance = new ApplicantService();
 
 export const get_applied_Post = async (req, res) => {
   var page = parseInt(req.query.page);
@@ -8,9 +9,13 @@ export const get_applied_Post = async (req, res) => {
   if (!page) page = 0;
   if (limit <= 0) limit = 10;
   if (page < 0) page = 0;
+  const uid = res.locals.uid;
   try {
-    const uid = res.locals.uid;
-    const get_applied_Post = await getAppliedPost(uid, page, limit);
+    const getAppliedUsers = await ApplicantServiceInstance.getAppliedUsers({
+      uid: uid,
+      page: page,
+      limit: limit,
+    });
 
     return res.status(200).json({
       status: "success",
@@ -19,7 +24,7 @@ export const get_applied_Post = async (req, res) => {
       prev_page: `http://localhost:1500/api/intern/posts?page=${
         page == 0 ? 0 : page - 1
       }`,
-      data: get_applied_Post,
+      data: getAppliedUsers,
     });
   } catch (err) {
     return res.status(400).json({ status: "failed", err: err });

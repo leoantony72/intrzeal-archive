@@ -1,11 +1,14 @@
-import { addcategory } from "../../model/Admin/Category.js";
+import { CategoryService } from "../../services/Admin/CategoryService.js";
 
+const CategoryServiceInstance = new CategoryService();
 export const addCategory = async (req, res) => {
   const { category } = req.body;
 
   try {
-    const createcategory = await addcategory(category);
-    if (!createcategory.id)
+    const addcategory = await CategoryServiceInstance.addCategory({
+      category: category,
+    });
+    if (!addcategory.id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something went wrong" });
@@ -15,7 +18,7 @@ export const addCategory = async (req, res) => {
     if (err.code == "P2002" && err.meta.target[0] == "category")
       return res
         .status(400)
-        .json({ status: "failed", err: `${category} Alredy Added` });
+        .json({ status: "failed", err: `${category} Already Added` });
     return res.status(400).json({ status: "failed", err: err.message });
   }
 };

@@ -1,17 +1,18 @@
-import { delPost, postOwner } from "../../model/Recruiter/Post.js";
-
+import { PostService } from "../../services/Recruiter/PostService.js";
+const PostServiceInstance = new PostService();
 export const deletePost = async (req, res) => {
   const { pid } = req.params;
 
   const uid = res.locals.uid;
   try {
-    const Post_Owner = await postOwner(pid);
-    if (Post_Owner[0].user_id != uid)
+    const delPost = await PostServiceInstance.deletePost({
+      pid: pid,
+      uid: uid,
+    });
+    if (!delPost.owner === true)
       return res
         .status(401)
         .json({ status: "failed", err: "Unauthorized action" });
-    const delPosts = await delPost(pid, uid);
-
     return res
       .status(200)
       .json({ status: "success", data: "Job Post Deleted" });

@@ -12,7 +12,12 @@ import { Recruiter } from "./routes/Recruiter/Route.js";
 //middleware
 import bloatRouter from "./utils/security/bloat.js";
 import { limiter } from "./utils/security/ratelimit.js";
-import { authorization } from "./middleware/checkif_authorized.js";
+import {
+  authorization,
+  RecruiterValidate,
+  InternValidate,
+  AdminValidate,
+} from "./middleware/checkif_authorized.js";
 
 const app = express();
 
@@ -25,9 +30,9 @@ app.use(express.json());
 //routes
 
 app.use("/api", common);
-app.use("/api/recruiter", authorization, Recruiter);
-app.use("/api/intern", authorization, Intern);
-app.use("/api/admin", authorization, Admin);
+app.use("/api/recruiter", authorization, RecruiterValidate, Recruiter);
+app.use("/api/intern", authorization, InternValidate, Intern);
+app.use("/api/admin", authorization, AdminValidate, Admin);
 
 app.get("*", function (req, res) {
   res.status(404).json({ err: "Route Not Found" });

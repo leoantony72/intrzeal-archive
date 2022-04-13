@@ -1,25 +1,20 @@
-import {
-  delApplication,
-  checkifApplied,
-} from "../../model/Intern/Applicant.js";
+import { ApplicantService } from "../../services/Intern/ApplicantService.js";
+const ApplicantServiceInstance = new ApplicantService();
 
 export const delete_applied_Post = async (req, res) => {
   const { pid } = req.params;
   //get userid from session
   const uid = res.locals.uid;
   try {
-    const checkifapplied = await checkifApplied(uid, pid);
-    if (!checkifapplied[0]) {
+    const delApplication = await ApplicantServiceInstance.delApplication({
+      uid: uid,
+      pid: pid,
+    });
+    if (delApplication.applied === false) {
       return res
         .status(400)
         .json({ status: "failed", err: "Not Applied To Job Post" });
     }
-    const delete_applied_Posts = await delApplication(pid, uid);
-    if (!delete_applied_Posts)
-      return res
-        .status(400)
-        .json({ status: "failed", err: "Something went wrong" });
-
     return res
       .status(200)
       .json({ status: "success", data: "application deleted" });
