@@ -1,11 +1,11 @@
 import { prisma } from "../../client.js";
 
-export const getrole = async (uid) => {
+export const getRole = async (uid) => {
   return await prisma.$queryRaw`
     SELECT u.role FROM "Users" u WHERE u.id =${uid}
     `;
 };
-export const get_User_profile_intern = async (uid) => {
+export const getUserProfileIntern = async (uid) => {
   return await prisma.$queryRaw`SELECT
   u.id,
   u.name,
@@ -31,7 +31,9 @@ export const get_User_profile_intern = async (uid) => {
  ) AS categories
  WHERE u.id =${uid};`;
 };
-export const get_User_profile_rec = async (uid) => {
+
+
+export const getUserProfileRecruiter = async (uid) => {
   return await prisma.$queryRaw`SELECT
   u.id,
   u.name,

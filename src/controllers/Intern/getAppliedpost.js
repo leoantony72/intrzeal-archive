@@ -1,7 +1,7 @@
 import { ApplicantService } from "../../services/Intern/ApplicantService.js";
 const ApplicantServiceInstance = new ApplicantService();
 
-export const get_applied_Post = async (req, res) => {
+export const getAppliedPost = async (req, res) => {
   var page = parseInt(req.query.page);
   var limit = parseInt(req.query.limit);
 
@@ -17,7 +17,7 @@ export const get_applied_Post = async (req, res) => {
       limit: limit,
     });
 
-    return res.status(200).json({
+    const data = {
       status: "success",
       current_page: page,
       next_page: `http://localhost:1500/api/intern/posts?page=${page + 1}`,
@@ -25,7 +25,8 @@ export const get_applied_Post = async (req, res) => {
         page == 0 ? 0 : page - 1
       }`,
       data: getAppliedPost,
-    });
+    };
+    return res.status(200).json(data);
   } catch (err) {
     return res.status(400).json({ status: "failed", err: err });
   }

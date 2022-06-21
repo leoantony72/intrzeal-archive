@@ -1,8 +1,8 @@
-import { del_post } from "../../model/Admin/Post.js";
+import { deletePost as delPost } from "../../model/Admin/Post.js";
 
 export class PostService {
-  delPost = async ({pid}) => {
-    const delPost = await del_post(pid);
-    return delPost;
+  deletePost = async ({ pid }) => {
+    const post = await delPost(pid);
+    return post;
   };
 }

@@ -12,14 +12,14 @@ describe("Intern : Applicant", () => {
 
   test("apply to post", async () => {
     const desc = "testing apply to post";
-    const apply = await applicantInstance.applytoPost({
+    const apply = await applicantInstance.applyToPost({
       uid: uid,
       pid: pid,
       description: desc,
     });
     expect(apply.closed == false);
     expect(apply.applied == false);
-    expect(apply.applytoPost.user_id);
+    expect(apply.post.user_id);
   });
 
   test("get Applied posts", async () => {
@@ -31,7 +31,7 @@ describe("Intern : Applicant", () => {
   });
 
   test("checkIfApplied", async () => {
-    const applied = await applicantInstance.checkIfApplied({
+    const applied = await applicantInstance.isApplied({
       uid: uid,
       pid: pid,
     });
@@ -40,7 +40,7 @@ describe("Intern : Applicant", () => {
   });
 
   test("delete application", async () => {
-    const application = await applicantInstance.delApplication({
+    const application = await applicantInstance.deleteApplication({
       uid: uid,
       pid: pid,
     });

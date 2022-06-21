@@ -2,14 +2,14 @@ import { CategoryService } from "../../services/Admin/CategoryService.js";
 
 const CategoryServiceInstance = new CategoryService();
 
-export const delete_category = async (req, res) => {
+export const deleteCategory = async (req, res) => {
   const { category } = req.query;
 
   try {
-    const del_category = await CategoryServiceInstance.deleteCategory({
+    const delcategory = await CategoryServiceInstance.deleteCategory({
       category: category,
     });
-    if (!del_category.id)
+    if (!delcategory.id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something went wrong" });

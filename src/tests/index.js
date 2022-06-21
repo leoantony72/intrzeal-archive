@@ -1,5 +1,5 @@
-import { addcategory } from "../model/Admin/Category.js";
-import { create_Post } from "../model/Recruiter/Post.js";
+import { addCategory } from "../model/Admin/Category.js";
+import { createPost } from "../model/Recruiter/Post.js";
 import { createUser } from "../model/tests/User.js";
 
 const user1 = {
@@ -39,9 +39,9 @@ export default async () => {
   const create_user1 = await createUser(user1);
   const create_user2 = await createUser(user2);
 
-  const create_category1 = await addcategory(category1);
-  const create_category2 = await addcategory(category2);
+  const create_category1 = await addCategory(category1);
+  const create_category2 = await addCategory(category2);
 
-  const create_post = await create_Post(post);
+  const create_post = await createPost(post);
   console.log(create_post)
 };

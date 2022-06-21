@@ -1,12 +1,11 @@
-import { u_stat} from "../../model/Admin/User.js";
-import { p_stat } from "../../model/Admin/Post.js";
-
+import { userStats } from "../../model/Admin/User.js";
+import { postStats } from "../../model/Admin/Post.js";
 
 export class MetricsService {
-    stats = async() =>{
-        const user_stats = await u_stat();
-        const post_stats = await p_stat();
+  stats = async () => {
+    const user = await userStats();
+    const post = await postStats();
 
-        return {user_stats,post_stats}
-    }
+    return { user, post };
+  };
 }

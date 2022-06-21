@@ -2,7 +2,7 @@ import { UserCategoryService } from "../../services/Intern/UserCategoryService.j
 
 const UserCategoryServiceInstance = new UserCategoryService();
 
-export const getUser_skill = async (req, res) => {
+export const getUserSkill = async (req, res) => {
   //get userid from session
   const uid = res.locals.uid;
   try {
@@ -16,7 +16,7 @@ export const getUser_skill = async (req, res) => {
   }
 };
 
-export const addUser_skill = async (req, res) => {
+export const addUserSkill = async (req, res) => {
   const { category } = req.body;
   //get userid from session
   const uid = res.locals.uid;
@@ -47,7 +47,7 @@ export const addUser_skill = async (req, res) => {
   }
 };
 
-export const delUser_skill = async (req, res) => {
+export const deleteUserSkill = async (req, res) => {
   const { category } = req.body;
   //get userid from session
   const uid = res.locals.uid;

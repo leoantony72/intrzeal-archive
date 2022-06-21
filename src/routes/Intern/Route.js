@@ -1,25 +1,25 @@
 import express from "express";
 import {
-  addUser_skill,
-  delUser_skill,
-  getUser_skill,
+  addUserSkill,
+  deleteUserSkill,
+  getUserSkill,
 } from "../../controllers/Intern/addUser_skills.js";
 const router = express.Router();
-import { applyPost } from "../../controllers/Intern/applyPost.js";
-import { delete_applied_Post } from "../../controllers/Intern/deleteAppliedpost.js";
-import { get_applied_Post } from "../../controllers/Intern/getAppliedpost.js";
-import { checkif_category_exist } from "../../middleware/checkifcategoryexist.js";
-import { checkifpostexist } from "../../middleware/checkifpostexist.js";
+import { applyToPost } from "../../controllers/Intern/applyPost.js";
+import { deleteAppliedPost } from "../../controllers/Intern/deleteAppliedpost.js";
+import { getAppliedPost } from "../../controllers/Intern/getAppliedpost.js";
+import { checkifCategoryExists } from "../../middleware/checkifcategoryexist.js";
+import { checkIfPostExists } from "../../middleware/checkifpostexist.js";
 
-router.get("/posts", get_applied_Post); //gets the job_post user applied to
-
-router
-  .post("/apply/posts/:pid", checkifpostexist, applyPost) //apply to job post //@@ ADD VAIDATION TO DESCRIPTION
-  .delete("/apply/posts/:pid", checkifpostexist, delete_applied_Post); //del the job application
+router.get("/posts", getAppliedPost); //gets the job_post user applied to
 
 router
-  .get("/users/skills", getUser_skill)
-  .post("/users/skills", checkif_category_exist, addUser_skill)
-  .delete("/users/skills", checkif_category_exist, delUser_skill);
+  .post("/apply/posts/:pid", checkIfPostExists, applyToPost) //apply to job post //@@ ADD VAIDATION TO DESCRIPTION
+  .delete("/apply/posts/:pid", checkIfPostExists, deleteAppliedPost); //del the job application
+
+router
+  .get("/users/skills", getUserSkill)
+  .post("/users/skills", checkifCategoryExists, addUserSkill)
+  .delete("/users/skills", checkifCategoryExists, deleteUserSkill);
 
 export { router as Intern };

@@ -13,17 +13,18 @@ export const getAppliedUsers = async (req, res) => {
   if (limit <= 0) limit = 10;
   if (page < 0) page = 0;
   try {
+
     const getapplieduser = await ApplicantServiceInstance.getApplied({
       uid: uid,
       pid: pid,
       page: page,
-      limit: limit,
+      limit: limit
     });
     if (!getapplieduser.owner === true)
       return res
         .status(401)
         .json({ status: "failed", err: "Unauthorized action" });
-    return res.status(200).json({
+    const data = {
       status: "success",
       current_page: page,
       next_page: `http://localhost:1500/api/recruiter/posts/${pid}/applicants?page=${
@@ -33,7 +34,10 @@ export const getAppliedUsers = async (req, res) => {
         page == 0 ? 0 : page - 1
       }`,
       data: getapplieduser.getUsers,
-    });
+    };
+
+    
+    return res.status(200).json(data);
   } catch (err) {
     console.log(err.message);
     return res.status(400).json({ status: "failed", err: err });

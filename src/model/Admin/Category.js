@@ -1,6 +1,6 @@
 import { prisma } from "../../../client.js";
 
-export const addcategory = async ({ id, category }) => {
+export const addCategory = async ({ id, category }) => {
   return await prisma.categories.create({
     data: {
       id: id,
@@ -11,7 +11,7 @@ export const addcategory = async ({ id, category }) => {
     },
   });
 };
-export const delcategory = async ({ id }) => {
+export const deleteCategory = async ({ id }) => {
   return await prisma.categories.delete({
     where: {
       id: id,

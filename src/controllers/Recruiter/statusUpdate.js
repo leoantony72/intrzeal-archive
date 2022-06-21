@@ -1,7 +1,7 @@
 import { PostService } from "../../services/Recruiter/PostService.js";
 
 const PostServiceInstance = new PostService();
-export const updateJob_Status = async (req, res) => {
+export const updateJobStatus = async (req, res) => {
   const { pid } = req.params;
   const { status } = req.query;
 
@@ -16,7 +16,7 @@ export const updateJob_Status = async (req, res) => {
     const updatestatus = await PostServiceInstance.updateStatus({
       pid: pid,
       uid: uid,
-      status: status,
+      status: status
     });
     if (!updatestatus.owner === true)
       return res

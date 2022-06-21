@@ -1,32 +1,32 @@
 import {
   ban,
   getUser,
-  getUser_by_ID,
-  getUser_by_role,
-  unban,
+  getUserById as usersById,
+  getUserByRole as usersByRole,
+  unBan,
 } from "../../model/Admin/User.js";
 
 export class UserService {
   banUser = async ({ uid }) => {
-    const banuser = await ban(uid);
-    return banuser;
+    const users = await ban(uid);
+    return users;
   };
-  unbanUser = async ({ uid }) => {
-    const unbanuser = await unban(uid);
-    return unbanuser;
+  unBanUser = async ({ uid }) => {
+    const users = await unBan(uid);
+    return users;
   };
 
   //@get Functions
   getUsers = async ({ page, limit }) => {
-    const getUsers = await getUser(page, limit);
-    return getUsers;
+    const users = await getUser(page, limit);
+    return users;
   };
-  getUsersbyRole = async ({ role, page, limit }) => {
-    const getUsers = await getUser_by_role(role, page, limit);
-    return getUsers;
+  getUsersByRole = async ({ role, page, limit }) => {
+    const users = await usersByRole(role, page, limit);
+    return users;
   };
-  getUserbyId = async ({ uid }) => {
-    const getUserbyID = await getUser_by_ID(uid);
-    return getUserbyID;
+  getUserById = async ({ uid }) => {
+    const users = await usersById(uid);
+    return users;
   };
 }

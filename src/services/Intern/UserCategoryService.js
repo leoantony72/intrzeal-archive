@@ -1,40 +1,41 @@
 import {
   addUserskill,
-  checkif_user_added_category,
-  delUser_skills,
-  getUser_skills,
+  isCategoryAdded,
+  deleteUserSkills,
+  getUserSkills,
 } from "../../model/Intern/User_meta_category.js";
 
 export class UserCategoryService {
-  checkifSkillAdded = async ({ uid, category }) => {
-    const check = await checkif_user_added_category(uid, category);
+  isSkillAdded = async ({ uid, category }) => {
+    const check = await isCategoryAdded(uid, category);
     return check;
   };
 
   getSkills = async ({ uid }) => {
-    const getuser_skill = await getUser_skills(uid);
-    return getuser_skill;
+    const userSkills = await getUserSkills(uid);
+    return userSkills;
   };
 
   addSkills = async ({ uid, category }) => {
-    const isSkillAdded = await this.checkifSkillAdded({
+    const skillAdded = await this.isSkillAdded({
       uid: uid,
       category: category,
     });
-    const n_exist = isSkillAdded[0].count;
-    if (n_exist != 0) return { added: true };
-    const adduser_skill = await addUserskill(uid, category);
-    return { adduser_skill, added: false };
+    const skillExist = skillAdded[0].count;
+    if (skillExist != 0) return { added: true };
+    const userSkill = await addUserskill(uid, category);
+    return { userSkill, added: false };
   };
-  delSkills = async ({ uid, category }) => {
-    const isSkillAdded = await this.checkifSkillAdded({
+
+  deleteSkills = async ({ uid, category }) => {
+    const skillAdded = await this.isSkillAdded({
       uid: uid,
       category: category,
     });
-    const n_exist = isSkillAdded[0].count;
-    if (n_exist == 0) return { added: false };
+    const skillExist = skillAdded[0].count;
+    if (skillExist == 0) return { added: false };
 
-    const deluser_skills = await delUser_skills(uid, category);
+    const userSkills = await deleteUserSkills(uid, category);
     return { added: true };
   };
 }

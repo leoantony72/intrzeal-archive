@@ -1,45 +1,43 @@
 import {
-  checkifApplied,
+  checkIfApplied,
   createApplication,
-  delApplication,
+  deleteApplication as delApplication,
   getAppliedPost,
   getJobStatus,
 } from "../../model/Intern/Applicant.js";
 
 export class ApplicantService {
   jobStatus = async ({ pid }) => {
-    const JobStatus = await getJobStatus(pid);
-    return JobStatus;
+    const jobStatus = await getJobStatus(pid);
+    return jobStatus;
   };
 
   getAppliedPosts = async ({ uid, page, limit }) => {
-    const get_applied_Post = await getAppliedPost(uid, page, limit);
-    return get_applied_Post;
+    const posts = await getAppliedPost(uid, page, limit);
+    return posts;
   };
 
-  checkIfApplied = async ({ uid, pid }) => {
-    const checkifapplied = await checkifApplied(uid, pid);
-    return checkifapplied;
+  isApplied = async ({ uid, pid }) => {
+    const applied = await checkIfApplied(uid, pid);
+    return applied;
   };
-  applytoPost = async ({ uid, pid, description }) => {
-    const isApplied = await this.checkIfApplied({ uid: uid, pid: pid });
+  applyToPost = async ({ uid, pid, description }) => {
+    const isApplied = await this.isApplied({ uid: uid, pid: pid });
     if (isApplied[0]) return { applied: true };
 
-    const jobstatus = await this.jobStatus({ pid: pid });
-    if (jobstatus[0].status === "CLOSED")
-      return { closed: true, applied: false };
+    const status = await this.jobStatus({ pid: pid });
+    if (status[0].status === "CLOSED") return { closed: true, applied: false };
     const date = new Date();
 
-    const applytoPost = await createApplication(uid, pid, description, date);
-    return { applytoPost, closed: false, applied: false };
+    const post = await createApplication(uid, pid, description, date);
+    return { post, closed: false, applied: false };
   };
 
-  delApplication = async ({ uid, pid }) => {
-    const isApplied = await this.checkIfApplied({ uid: uid, pid: pid });
+  deleteApplication = async ({ uid, pid }) => {
+    const isApplied = await this.isApplied({ uid: uid, pid: pid });
     if (!isApplied[0]) return { applied: false };
 
-    const delete_applied_Posts = await delApplication(pid, uid);
+    const deleteAppliedPosts = await delApplication(pid, uid);
     return { applied: true };
   };
 }
-

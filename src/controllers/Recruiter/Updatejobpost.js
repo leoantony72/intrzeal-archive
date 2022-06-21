@@ -1,9 +1,3 @@
-import { postOwner, update_Post } from "../../model/Recruiter/Post.js";
-import {
-  add_category,
-  checkif_category_added,
-  delCategory,
-} from "../../model/Recruiter/Post_category.js";
 import { PostService } from "../../services/Recruiter/PostService.js";
 const PostServiceInstance = new PostService();
 
@@ -45,15 +39,16 @@ export const updatePost = async (req, res) => {
 };
 
 //Add Individual Category
-export const updatePost_addcategory = async (req, res) => {
+export const updatePostAddCategory = async (req, res) => {
   const { pid } = req.params;
   const { category } = req.body;
   const uid = res.locals.uid;
   try {
+
     const addcategory = await PostServiceInstance.addCategory({
       pid: pid,
       uid: uid,
-      category: category,
+      category: category
     });
     if (!addcategory.owner === true)
       return res
@@ -74,7 +69,7 @@ export const updatePost_addcategory = async (req, res) => {
   }
 };
 //Delete Individual Category
-export const updatePost_delcategory = async (req, res) => {
+export const updatePostDeleteCategory = async (req, res) => {
   const { pid } = req.params;
   const { category } = req.body;
 
@@ -83,7 +78,7 @@ export const updatePost_delcategory = async (req, res) => {
     const delCategories = await PostServiceInstance.delCategory({
       pid: pid,
       uid: uid,
-      category: category,
+      category: category
     });
 
     if (!delCategories.owner === true)

@@ -23,7 +23,7 @@ export const getUsers = async (req, res) => {
         limit: limit,
       });
 
-      return res.status(200).json({
+      const data = {
         status: "success",
         current_page: page,
         next_page: `http://localhost:1500/api/admin/users?page=${page + 1}`,
@@ -31,13 +31,14 @@ export const getUsers = async (req, res) => {
           page == 0 ? 0 : page - 1
         }`,
         data: getUsersbyrole,
-      });
+      };
+      return res.status(200).json(data);
     }
     const getUsers = await UserServiceInstance.getUsers({
       page: page,
       limit: limit,
     });
-    return res.status(200).json({
+    const data = {
       status: "success",
       current_page: page,
       next_page: `http://localhost:1500/api/admin/users?page=${page + 1}`,
@@ -45,7 +46,8 @@ export const getUsers = async (req, res) => {
         page == 0 ? 0 : page - 1
       }`,
       data: getUsers,
-    });
+    };
+    return res.status(200).json(data);
   } catch (err) {
     return res.status(400).json({ status: "failed", err: err.message });
   }

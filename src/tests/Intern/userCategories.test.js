@@ -12,7 +12,7 @@ describe("Intern : user Category", () => {
       category: category,
     });
     expect(add_skills.added == false);
-    expect(add_skills.adduser_skill.user_id);
+    expect(add_skills.userSkill.user_id);
   });
 
   test("getSkills", async () => {
@@ -22,7 +22,7 @@ describe("Intern : user Category", () => {
   });
 
   test("check if skill is already added", async () => {
-    const skills = await usercategoryInstance.checkifSkillAdded({
+    const skills = await usercategoryInstance.isSkillAdded({
       uid: uid,
       category: category,
     });
@@ -30,7 +30,7 @@ describe("Intern : user Category", () => {
   });
 
   test("delete skills", async () => {
-    const delete_skill = await usercategoryInstance.delSkills({
+    const delete_skill = await usercategoryInstance.deleteSkills({
       uid: uid,
       category: category,
     });

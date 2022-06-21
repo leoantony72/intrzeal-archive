@@ -2,7 +2,7 @@ import { ApplicantService } from "../../services/Intern/ApplicantService.js";
 
 const ApplicantServiceInstance = new ApplicantService();
 
-export const applyPost = async (req, res) => {
+export const applyToPost = async (req, res) => {
   const { pid } = req.params;
   const { description } = req.body;
 
@@ -14,6 +14,8 @@ export const applyPost = async (req, res) => {
       pid: pid,
       description: description,
     });
+
+
     if (apply.applied === true) {
       return res.status(400).json({ status: "failed", err: "Already Applied" });
     }

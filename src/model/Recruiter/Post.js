@@ -1,6 +1,6 @@
 import { prisma } from "../../../client.js";
 
-export const create_Post = async ({
+export const createPost = async ({
   id,
   uid,
   title,
@@ -40,7 +40,7 @@ export const create_Post = async ({
   });
 };
 
-export const update_Post = async (
+export const updatePost = async (
   pid,
   uid,
   title,
@@ -56,7 +56,7 @@ export const updateStatus = async (pid, uid, status) => {
   return await prisma.$queryRaw`UPDATE "Posts" SET status=${status} WHERE id = ${pid} AND user_id=${uid} RETURNING id`;
 };
 
-export const delPost = async (pid, uid) => {
+export const deletePost = async (pid, uid) => {
   return await prisma.posts.deleteMany({
     where: {
       id: pid,

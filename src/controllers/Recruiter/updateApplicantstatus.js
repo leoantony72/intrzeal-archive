@@ -1,17 +1,19 @@
 import { ApplicantService } from "../../services/Recruiter/ApplicantService.js";
 const ApplicantServiceInstance = new ApplicantService();
 
-export const updateApplicantstatus = async (req, res) => {
+export const updateApplicantStatus = async (req, res) => {
   const { pid } = req.params;
   const { uid } = req.params;
 
-  const loggedIn_user = res.locals.uid;
+  const loggedInUser = res.locals.uid;
   try {
+
     const updateStatus = await ApplicantServiceInstance.updateApplicantStatus({
       uid: uid,
       pid: pid,
-      loggedIn_user: loggedIn_user,
+      loggedInUser: loggedInUser
     });
+
     if (!updateStatus.owner === true)
       return res
         .status(401)
