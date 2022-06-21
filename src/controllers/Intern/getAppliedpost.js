@@ -11,7 +11,7 @@ export const get_applied_Post = async (req, res) => {
   if (page < 0) page = 0;
   const uid = res.locals.uid;
   try {
-    const getAppliedUsers = await ApplicantServiceInstance.getAppliedUsers({
+    const getAppliedPost = await ApplicantServiceInstance.getAppliedPosts({
       uid: uid,
       page: page,
       limit: limit,
@@ -24,7 +24,7 @@ export const get_applied_Post = async (req, res) => {
       prev_page: `http://localhost:1500/api/intern/posts?page=${
         page == 0 ? 0 : page - 1
       }`,
-      data: getAppliedUsers,
+      data: getAppliedPost,
     });
   } catch (err) {
     return res.status(400).json({ status: "failed", err: err });

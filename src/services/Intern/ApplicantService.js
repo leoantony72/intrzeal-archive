@@ -12,7 +12,7 @@ export class ApplicantService {
     return JobStatus;
   };
 
-  getAppliedUsers = async ({ uid, page, limit }) => {
+  getAppliedPosts = async ({ uid, page, limit }) => {
     const get_applied_Post = await getAppliedPost(uid, page, limit);
     return get_applied_Post;
   };
@@ -42,3 +42,4 @@ export class ApplicantService {
     return { applied: true };
   };
 }
+

@@ -18,7 +18,6 @@ export const updateJob_Status = async (req, res) => {
       uid: uid,
       status: status,
     });
-    console.log(updatestatus)
     if (!updatestatus.owner === true)
       return res
         .status(401)

@@ -8,7 +8,6 @@ export const authorization = (req, res, next) => {
 export const InternValidate = async (req, res, next) => {
   const uid = res.locals.uid;
   const role = await getUserRole(uid);
-
   if (role[0].role === "INTERN") return next();
   if (role[0].role === "ADMIN") return next();
   return res.status(401).json({ status: "failed", err: "Unauthorized" });

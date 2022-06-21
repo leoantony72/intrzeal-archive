@@ -18,7 +18,6 @@ describe("Admin : Post", () => {
   test("del post", async () => {
     const create_post = await postInstanceRecruiter.createPost(post);
     const pid = create_post.createPost.id;
-    console.log(pid);
     const delete_post = await postInstance.delPost({ pid: pid });
     expect(delete_post.id);
   });

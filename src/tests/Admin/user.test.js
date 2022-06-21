@@ -8,7 +8,6 @@ describe("Admin : User", () => {
     const page = 1;
     const limit = 4;
     const users = await userInstance.getUsers({ page, limit });
-    console.log(users);
     expect(users[0].id);
     expect(users[0].name);
   });
@@ -29,11 +28,11 @@ describe("Admin : User", () => {
   });
 
   test("Ban a User", async () => {
-    const users = userInstance.banUser({ uid: uid });
+    const users = await userInstance.banUser({ uid: uid });
     expect(users.id);
   });
   test("UnBan a User", async () => {
-    const users = userInstance.unbanUser({ uid: uid });
+    const users = await userInstance.unbanUser({ uid: uid });
     expect(users.id);
   });
 });
