@@ -7,8 +7,12 @@ import { getStat } from "../../controllers/Admin/getStat.js";
 import { getUsers, getUsersbyID } from "../../controllers/Admin/getUsers.js";
 import { checkifUserexist } from "../../middleware/checkifUserexist.js";
 import { checkifpostexist } from "../../middleware/checkifpostexist.js";
+import { delete_category } from "../../controllers/Admin/delCategory.js";
 
-router.post("/category", addCategory);
+router
+.post("/category", addCategory)
+.delete("/category",delete_category)
+
 router.delete("/post/:pid", checkifpostexist, deletePost);
 
 

@@ -1,6 +1,7 @@
 import { PostService } from "../../services/Admin/PostService.js";
 
 const PostServiceInstance = new PostService();
+
 export const deletePost = async (req, res) => {
   const { pid } = req.params;
 

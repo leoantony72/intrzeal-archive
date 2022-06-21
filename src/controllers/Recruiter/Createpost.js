@@ -1,10 +1,12 @@
 import { PostService } from "../../services/Recruiter/PostService.js";
+
+
 const PostServiceInstance = new PostService();
 export const createPost = async (req, res) => {
   const { title, description, salary, job_experience } = req.body;
-
   const { category } = req.body;
   const uid = res.locals.uid;
+  
   try {
     const Create = await PostServiceInstance.createPost({
       uid: uid,

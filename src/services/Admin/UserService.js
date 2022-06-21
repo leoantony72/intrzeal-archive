@@ -15,6 +15,8 @@ export class UserService {
     const unbanuser = await unban(uid);
     return unbanuser;
   };
+
+  //@get Functions
   getUsers = async ({ page, limit }) => {
     const getUsers = await getUser(page, limit);
     return getUsers;
