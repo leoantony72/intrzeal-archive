@@ -1,4 +1,4 @@
-import { prisma } from "../../client.js";
+import { prisma } from "../../../client.js";
 
 export const getRole = async (uid) => {
   return await prisma.$queryRaw`

@@ -1,7 +1,7 @@
 import {
   getCategoryByID,
   getCategories
-} from "../../model/Category.js";
+} from "../../model/public_routes/Category.js";
 
 export class CategoryService {
   getCategory = async ({ page, limit }) => {

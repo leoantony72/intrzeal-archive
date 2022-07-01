@@ -1,4 +1,4 @@
-import { CategoryService } from "../services/public_route/CategoryService.js";
+import { CategoryService } from "../../services/public_route/CategoryService.js";
 
 const CategoryServiceInstance = new CategoryService();
 

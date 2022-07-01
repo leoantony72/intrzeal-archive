@@ -6,7 +6,7 @@ const postInstance = new PostService();
 const postInstanceRecruiter = new Postservice2();
 
 const post = {
-  uid: "1err",
+  uid: "xx1",
   title: "test",
   description: "testing delete function",
   salary: 10000,

@@ -2,22 +2,22 @@ import {
   getRole as role,
   getUserProfileIntern,
   getUserProfileRecruiter,
-} from "../../model/User.js";
+} from "../../model/public_routes/User.js";
 
 export class UserService {
   getRole = async ({ uid }) => {
     const UserRole = await role(uid);
     return UserRole;
   };
-  getUserProfile = async ({ uid, role }) => {
-    if (role === "INTERN") {
+  getUserProfile = async ({ uid }) => {
+    const role = await this.getRole({ uid: uid });
+    if (role[0].role === "INTERN") {
       const Userprofile = await getUserProfileIntern(uid);
-      return { profile: Userprofile };
-    } else if (role === "RECRUITER") {
+      return { role:"INTERN",profile: Userprofile };
+    } else if (role[0].role === "RECRUITER") {
       const Userprofile = await getUserProfileRecruiter(uid);
-      return { profile: Userprofile };
+      return { role:"RECRUITER",profile: Userprofile };
     }
-
     return { err: "Profile Not Found" };
   };
 }

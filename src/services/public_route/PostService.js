@@ -1,4 +1,4 @@
-import { getPostByID, getPost, getPostByCategory } from "../../model/Post.js";
+import { getPostByID, getPost, getPostByCategory } from "../../model/public_routes/Post.js";
 
 export class PostService {
   getPost = async ({ page, limit }) => {

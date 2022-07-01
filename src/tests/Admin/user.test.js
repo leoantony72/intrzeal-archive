@@ -3,7 +3,7 @@ import { UserService } from "../../services/Admin/UserService";
 const userInstance = new UserService();
 
 describe("Admin : User", () => {
-  const uid = "1err";
+  const uid = "xx1";
   test("get Users", async () => {
     const page = 1;
     const limit = 4;

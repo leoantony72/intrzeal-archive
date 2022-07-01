@@ -26,13 +26,12 @@ export const createPost = async ({
       },
     });
     const postid = createPost.id;
-
     const addCategory = await prisma.Post_categories.createMany({
       data: [
         { post_id: postid, category_id: category[0] },
         { post_id: postid, category_id: category[1] || category[0] },
+        { post_id: postid, category_id: category[2] || category[0] },
         { post_id: postid, category_id: category[3] || category[0] },
-        { post_id: postid, category_id: category[4] || category[0] },
       ],
       skipDuplicates: true,
     });

@@ -14,7 +14,6 @@ import {
 } from "../../model/Recruiter/Post_category.js";
 
 export class PostService {
-
   createPost = async ({
     uid,
     title,
@@ -76,36 +75,36 @@ export class PostService {
   };
 
   checkIfCategoryAdded = async ({ pid, category }) => {
-    return await isCategoryAdded(pid, category);
+    const isAdded = await isCategoryAdded(pid, category);
+    if (isAdded[0].count == 0) return { added: false };
+    return { added: true };
   };
 
   addCategories = async ({ pid, uid, category }) => {
     const owner = await this.Owner({ pid: pid });
     if (owner[0].user_id != uid) return { owner: false };
 
-    const isCategoryAdded = await this.checkifCategoryAdded({
+    const isCategoryAdded = await this.checkIfCategoryAdded({
       pid: pid,
       category: category,
     });
 
-    const categoryExist = isCategoryAdded[0].count;
-    if (categoryExist != 0) return { added: true, owner: true };
+    if (isCategoryAdded.added == true) return { added: true, owner: true };
 
     const insertCategory = await addCategory(pid, category);
-    return { category, added: false, owner: true };
+    return { category: insertCategory, added: false, owner: true };
   };
 
   deleteCategory = async ({ pid, uid, category }) => {
     const owner = await this.Owner({ pid: pid });
     if (owner[0].user_id != uid) return { owner: false };
 
-    const isCategoryAdded = await this.checkifCategoryAdded({
+    const isCategoryAdded = await this.checkIfCategoryAdded({
       pid: pid,
       category: category,
     });
 
-    const categoryExist = isCategoryAdded[0].count;
-    if (categoryExist != 1) return { added: false, owner: true };
+    if (isCategoryAdded.added == false) return { added: false, owner: true };
 
     const delcategory = await delCategory(pid, category);
     return { delcategory, added: true, owner: true };

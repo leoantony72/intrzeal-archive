@@ -17,7 +17,10 @@ export class ApplicantService {
   };
 
   userApplied = async ({ uid, pid }) => {
-    return await isUserApplied(uid, pid);
+    const isaplied = await isUserApplied(uid, pid);
+
+    if (!isaplied[0]) return { applied: false };
+    return { applied: true };
   };
 
   updateApplicantStatus = async ({ uid, pid, loggedInUser }) => {
@@ -25,8 +28,7 @@ export class ApplicantService {
     if (owner[0].user_id != loggedInUser) return { owner: false };
 
     const applied = await this.userApplied({ uid: uid, pid: pid });
-
-    if (!applied[0]) return { owner: true, applied: false };
+    if (!applied.applied == true) return { owner: true, applied: false };
 
     const applicant = await updateApplicantStatus(pid, uid);
     return { applicant, owner: true, applied: true };

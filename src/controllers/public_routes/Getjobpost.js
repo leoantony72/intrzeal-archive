@@ -1,4 +1,4 @@
-import { PostService } from "../services/public_route/PostService.js";
+import { PostService } from "../../services/public_route/PostService.js";
 
 const PostServiceInstance = new PostService();
 
