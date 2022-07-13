@@ -31,7 +31,7 @@ export const addUserSkill = async (req, res) => {
         .status(400)
         .json({ status: "failed", err: "Category/skill Already Added" });
 
-    if (!addSkill.adduser_skill.user_id)
+    if (!addSkill.userSkill.user_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });
@@ -52,7 +52,7 @@ export const deleteUserSkill = async (req, res) => {
   //get userid from session
   const uid = res.locals.uid;
   try {
-    const delSkill = await UserCategoryServiceInstance.delSkills({
+    const delSkill = await UserCategoryServiceInstance.deleteSkills({
       uid: uid,
       category: category,
     });

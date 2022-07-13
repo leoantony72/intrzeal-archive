@@ -6,7 +6,7 @@ export const deleteAppliedPost = async (req, res) => {
   //get userid from session
   const uid = res.locals.uid;
   try {
-    const delApplication = await ApplicantServiceInstance.delApplication({
+    const delApplication = await ApplicantServiceInstance.deleteApplication({
       uid: uid,
       pid: pid,
     });

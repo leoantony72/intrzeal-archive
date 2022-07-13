@@ -23,7 +23,7 @@ export const updateJobStatus = async (req, res) => {
         .status(401)
         .json({ status: "failed", err: "Unauthorized action" });
 
-    if (!updatestatus.update_Status[0].id)
+    if (!updatestatus.postStatus[0].id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });

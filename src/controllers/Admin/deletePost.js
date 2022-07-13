@@ -6,7 +6,7 @@ export const deletePost = async (req, res) => {
   const { pid } = req.params;
 
   try {
-    const delPost = await PostServiceInstance.delPost({ pid: pid });
+    const delPost = await PostServiceInstance.deletePost({ pid: pid });
     if (!delPost.id)
       return res
         .status(400)

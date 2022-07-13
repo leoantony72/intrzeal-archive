@@ -11,7 +11,7 @@ export const updatePost = async (req, res) => {
         .status(400)
         .json({ status: "failed", err: "Provide Status Open or Closed" });
   try {
-    const updateJob = await PostServiceInstance.updatePost({
+    const updateJob = await PostServiceInstance.updatePosts({
       pid: pid,
       uid: uid,
       title: title,
@@ -25,7 +25,7 @@ export const updatePost = async (req, res) => {
       return res
         .status(401)
         .json({ status: "failed", err: "Unauthorized action" });
-    if (!updateJob.updatePosts[0].id)
+    if (!updateJob.posts[0].id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });
@@ -45,7 +45,7 @@ export const updatePostAddCategory = async (req, res) => {
   const uid = res.locals.uid;
   try {
 
-    const addcategory = await PostServiceInstance.addCategory({
+    const addcategory = await PostServiceInstance.addCategories({
       pid: pid,
       uid: uid,
       category: category
@@ -58,7 +58,7 @@ export const updatePostAddCategory = async (req, res) => {
       return res
         .status(400)
         .json({ status: "failed", err: "Category Already Added" });
-    if (!addcategory.addCategory[0].post_id)
+    if (!addcategory.category[0].post_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });
@@ -75,7 +75,7 @@ export const updatePostDeleteCategory = async (req, res) => {
 
   const uid = res.locals.uid;
   try {
-    const delCategories = await PostServiceInstance.delCategory({
+    const delCategories = await PostServiceInstance.deleteCategory({
       pid: pid,
       uid: uid,
       category: category
@@ -89,7 +89,7 @@ export const updatePostDeleteCategory = async (req, res) => {
       return res
         .status(400)
         .json({ status: "failed", err: "Category Not Added" });
-    if (!delCategories.del_category[0].post_id)
+    if (!delCategories.delcategory[0].post_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });

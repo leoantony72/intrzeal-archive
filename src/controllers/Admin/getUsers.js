@@ -56,7 +56,7 @@ export const getUsers = async (req, res) => {
 export const getUsersbyID = async (req, res) => {
   const { uid } = req.params;
   try {
-    const getUsers = await UserServiceInstance.getUserbyId({ uid: uid });
+    const getUsers = await UserServiceInstance.getUserById({ uid: uid });
 
     return res.status(200).json({ status: "success", data: getUsers });
   } catch (err) {
