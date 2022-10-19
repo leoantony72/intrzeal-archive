@@ -2,18 +2,20 @@ import { ApplicantService } from "../../services/Intern/ApplicantService.js";
 
 const ApplicantServiceInstance = new ApplicantService();
 
-export const applyPost = async (req, res) => {
+export const applyToPost = async (req, res) => {
   const { pid } = req.params;
   const { description } = req.body;
 
   //get userid from session
   const uid = res.locals.uid;
   try {
-    const apply = await ApplicantServiceInstance.applytoPost({
+    const apply = await ApplicantServiceInstance.applyToPost({
       uid: uid,
       pid: pid,
       description: description,
     });
+
+
     if (apply.applied === true) {
       return res.status(400).json({ status: "failed", err: "Already Applied" });
     }
@@ -21,7 +23,7 @@ export const applyPost = async (req, res) => {
     if (apply.closed === true)
       return res.status(400).json({ status: "failed", err: "Job Post Closed" });
 
-    if (!apply.applytoPost.user_id)
+    if (!apply.post.user_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something went wrong" });

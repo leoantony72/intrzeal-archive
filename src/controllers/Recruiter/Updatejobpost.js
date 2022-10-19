@@ -1,9 +1,3 @@
-import { postOwner, update_Post } from "../../model/Recruiter/Post.js";
-import {
-  add_category,
-  checkif_category_added,
-  delCategory,
-} from "../../model/Recruiter/Post_category.js";
 import { PostService } from "../../services/Recruiter/PostService.js";
 const PostServiceInstance = new PostService();
 
@@ -17,7 +11,7 @@ export const updatePost = async (req, res) => {
         .status(400)
         .json({ status: "failed", err: "Provide Status Open or Closed" });
   try {
-    const updateJob = await PostServiceInstance.updatePost({
+    const updateJob = await PostServiceInstance.updatePosts({
       pid: pid,
       uid: uid,
       title: title,
@@ -31,7 +25,7 @@ export const updatePost = async (req, res) => {
       return res
         .status(401)
         .json({ status: "failed", err: "Unauthorized action" });
-    if (!updateJob.updatePosts[0].id)
+    if (!updateJob.posts[0].id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });
@@ -45,15 +39,16 @@ export const updatePost = async (req, res) => {
 };
 
 //Add Individual Category
-export const updatePost_addcategory = async (req, res) => {
+export const updatePostAddCategory = async (req, res) => {
   const { pid } = req.params;
   const { category } = req.body;
   const uid = res.locals.uid;
   try {
-    const addcategory = await PostServiceInstance.addCategory({
+
+    const addcategory = await PostServiceInstance.addCategories({
       pid: pid,
       uid: uid,
-      category: category,
+      category: category
     });
     if (!addcategory.owner === true)
       return res
@@ -63,7 +58,7 @@ export const updatePost_addcategory = async (req, res) => {
       return res
         .status(400)
         .json({ status: "failed", err: "Category Already Added" });
-    if (!addcategory.addCategory[0].post_id)
+    if (!addcategory.category[0].post_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });
@@ -74,16 +69,16 @@ export const updatePost_addcategory = async (req, res) => {
   }
 };
 //Delete Individual Category
-export const updatePost_delcategory = async (req, res) => {
+export const updatePostDeleteCategory = async (req, res) => {
   const { pid } = req.params;
   const { category } = req.body;
 
   const uid = res.locals.uid;
   try {
-    const delCategories = await PostServiceInstance.delCategory({
+    const delCategories = await PostServiceInstance.deleteCategory({
       pid: pid,
       uid: uid,
-      category: category,
+      category: category
     });
 
     if (!delCategories.owner === true)
@@ -94,7 +89,7 @@ export const updatePost_delcategory = async (req, res) => {
       return res
         .status(400)
         .json({ status: "failed", err: "Category Not Added" });
-    if (!delCategories.del_category[0].post_id)
+    if (!delCategories.delcategory[0].post_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });

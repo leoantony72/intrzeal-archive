@@ -1,6 +1,7 @@
 import { CategoryService } from "../../services/Admin/CategoryService.js";
 
 const CategoryServiceInstance = new CategoryService();
+
 export const addCategory = async (req, res) => {
   const { category } = req.body;
 

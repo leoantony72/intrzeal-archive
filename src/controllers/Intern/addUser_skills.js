@@ -2,7 +2,7 @@ import { UserCategoryService } from "../../services/Intern/UserCategoryService.j
 
 const UserCategoryServiceInstance = new UserCategoryService();
 
-export const getUser_skill = async (req, res) => {
+export const getUserSkill = async (req, res) => {
   //get userid from session
   const uid = res.locals.uid;
   try {
@@ -16,7 +16,7 @@ export const getUser_skill = async (req, res) => {
   }
 };
 
-export const addUser_skill = async (req, res) => {
+export const addUserSkill = async (req, res) => {
   const { category } = req.body;
   //get userid from session
   const uid = res.locals.uid;
@@ -31,7 +31,7 @@ export const addUser_skill = async (req, res) => {
         .status(400)
         .json({ status: "failed", err: "Category/skill Already Added" });
 
-    if (!addSkill.adduser_skill.user_id)
+    if (!addSkill.userSkill.user_id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });
@@ -47,12 +47,12 @@ export const addUser_skill = async (req, res) => {
   }
 };
 
-export const delUser_skill = async (req, res) => {
+export const deleteUserSkill = async (req, res) => {
   const { category } = req.body;
   //get userid from session
   const uid = res.locals.uid;
   try {
-    const delSkill = await UserCategoryServiceInstance.delSkills({
+    const delSkill = await UserCategoryServiceInstance.deleteSkills({
       uid: uid,
       category: category,
     });

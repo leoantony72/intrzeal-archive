@@ -1,6 +1,6 @@
 import { prisma } from "../../../client.js";
 
-export const checkifApplied = async (uid, pid) => {
+export const checkIfApplied = async (uid, pid) => {
   return await prisma.Applicants.findMany({
     where: {
       user_id: uid,
@@ -31,7 +31,7 @@ export const getAppliedPost = async (uid,page,limit) => {
   return await prisma.$queryRaw`SELECT a.post_id,p.title,p.status,p.salary,p.created_at,a.description FROM "Applicants" a JOIN "Posts" p ON p.id = a.post_id WHERE a.user_id =${uid} LIMIT ${limit} OFFSET ${page};`;
 };
 
-export const delApplication = async (pid, uid) => {
+export const deleteApplication = async (pid, uid) => {
   return await prisma.Applicants.deleteMany({
     where: {
       post_id: pid,

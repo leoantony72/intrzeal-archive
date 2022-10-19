@@ -1,6 +1,6 @@
 import { prisma } from "../../../client.js";
 
-export const create_Post = async ({
+export const createPost = async ({
   id,
   uid,
   title,
@@ -26,13 +26,12 @@ export const create_Post = async ({
       },
     });
     const postid = createPost.id;
-
     const addCategory = await prisma.Post_categories.createMany({
       data: [
         { post_id: postid, category_id: category[0] },
         { post_id: postid, category_id: category[1] || category[0] },
+        { post_id: postid, category_id: category[2] || category[0] },
         { post_id: postid, category_id: category[3] || category[0] },
-        { post_id: postid, category_id: category[4] || category[0] },
       ],
       skipDuplicates: true,
     });
@@ -40,7 +39,7 @@ export const create_Post = async ({
   });
 };
 
-export const update_Post = async (
+export const updatePost = async (
   pid,
   uid,
   title,
@@ -56,7 +55,7 @@ export const updateStatus = async (pid, uid, status) => {
   return await prisma.$queryRaw`UPDATE "Posts" SET status=${status} WHERE id = ${pid} AND user_id=${uid} RETURNING id`;
 };
 
-export const delPost = async (pid, uid) => {
+export const deletePost = async (pid, uid) => {
   return await prisma.posts.deleteMany({
     where: {
       id: pid,

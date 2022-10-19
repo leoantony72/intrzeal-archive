@@ -1,18 +1,18 @@
-import { check_Category_exist } from "../model/middlewares/Category.js";
+import { checkIfCategoryExist } from "../model/middlewares/Category.js";
 
-export const checkif_category_exist = async (req, res, next) => {
+export const checkifCategoryExists = async (req, res, next) => {
   const { category } = req.body;
   if (!category) return res.status(400).json({ status: "failed",err: "Category Not Provided" });
 
-  let n_category = category.length;
-  if (n_category > 5)
+  let categorylength = category.length;
+  if (categorylength > 5)
     return res
       .status(400)
       .json({ status: "failed", err: "Only 5 Category allowed" });
-  const check = await check_Category_exist(category);
+  const check = await checkIfCategoryExist(category);
 
   const n_exist = check[0].count;
-  if (n_category != n_exist)
+  if (categorylength != n_exist)
     return res
       .status(400)
       .json({ status: "failed", err: "Category Not Found" });

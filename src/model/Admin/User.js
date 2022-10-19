@@ -1,6 +1,6 @@
 import { prisma } from "../../../client.js";
 
-export const getUser = async (page,limit) => {
+export const getUser = async (page, limit) => {
   return await prisma.Users.findMany({
     select: {
       id: true,
@@ -16,7 +16,7 @@ export const getUser = async (page,limit) => {
   });
 };
 
-export const getUser_by_ID = async (uid) => {
+export const getUserById = async (uid) => {
   return await prisma.Users.findMany({
     where: {
       id: uid,
@@ -33,7 +33,7 @@ export const getUser_by_ID = async (uid) => {
   });
 };
 
-export const getUser_by_role = async (role, page, limit) => {
+export const getUserByRole = async (role, page, limit) => {
   return await prisma.Users.findMany({
     where: {
       role: role,
@@ -64,7 +64,7 @@ export const ban = async (uid) => {
   });
 };
 
-export const unban = async (uid) => {
+export const unBan = async (uid) => {
   return await prisma.Users.update({
     where: {
       id: uid,
@@ -78,6 +78,6 @@ export const unban = async (uid) => {
   });
 };
 
-export const u_stat = async () => {
+export const userStats = async () => {
   return await prisma.$queryRaw`SELECT u.role,COUNT(u.id) AS USERS FROM "Users" AS u GROUP BY u.role`;
 };

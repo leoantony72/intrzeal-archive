@@ -1,21 +1,21 @@
-import { getPost_by_ID, get_Post, get_Post_category } from "../model/Post.js";
-import { PostService } from "../services/public_route/PostService.js";
+import { PostService } from "../../services/public_route/PostService.js";
 
 const PostServiceInstance = new PostService();
+
 export const getPost = async (req, res) => {
   const category = Array(req.query.category);
   var page = parseInt(req.query.page);
   var limit = parseInt(req.query.limit);
-
   if (limit <= 0) limit = 10;
   if (page < 0) page = 0;
+
   try {
     if (category[0] == undefined) {
       const getPosts = await PostServiceInstance.getPost({
         page: page,
         limit: limit,
       });
-      return res.status(200).json({
+      const data = {
         status: "success",
         current_page: page,
         next_page: `http://localhost:1500/api/posts?page=${page + 1}`,
@@ -23,14 +23,16 @@ export const getPost = async (req, res) => {
           page == 0 ? 0 : page - 1
         }`,
         data: getPosts,
-      });
+      };
+
+      return res.status(200).json(data);
     } else if (category.length >> 0) {
       const getPosts = await PostServiceInstance.getPostbyCategory({
         category: category,
         page: page,
         limit: limit,
       });
-      return res.status(200).json({
+      const data = {
         status: "success",
         current_page: page,
         next_page: `http://localhost:1500/api/posts?page=${page + 1}`,
@@ -38,7 +40,9 @@ export const getPost = async (req, res) => {
           page == 0 ? 0 : page - 1
         }`,
         data: getPosts,
-      });
+      };
+
+      return res.status(200).json(data);
     }
   } catch (err) {
     console.log(err.message);
@@ -46,8 +50,9 @@ export const getPost = async (req, res) => {
   }
 };
 
-export const getPost_by_Id = async (req, res) => {
+export const getPostById = async (req, res) => {
   const { pid } = req.params;
+
   try {
     const getPost = await PostServiceInstance.getPostbyId({ pid: pid });
     if (getPost.length === 0)

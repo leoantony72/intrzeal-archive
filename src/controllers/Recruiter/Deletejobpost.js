@@ -7,7 +7,7 @@ export const deletePost = async (req, res) => {
   try {
     const delPost = await PostServiceInstance.deletePost({
       pid: pid,
-      uid: uid,
+      uid: uid
     });
     if (!delPost.owner === true)
       return res

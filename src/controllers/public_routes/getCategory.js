@@ -1,4 +1,4 @@
-import { CategoryService } from "../services/public_route/CategoryService.js";
+import { CategoryService } from "../../services/public_route/CategoryService.js";
 
 const CategoryServiceInstance = new CategoryService();
 
@@ -15,7 +15,7 @@ export const getCategory = async (req, res) => {
       page: page,
       limit: limit,
     });
-    return res.status(200).json({
+    const data = {
       status: "success",
       current_page: page,
       next_page: `http://localhost:1500/api/category?page=${page + 1}`,
@@ -23,13 +23,15 @@ export const getCategory = async (req, res) => {
         page == 0 ? 0 : page - 1
       }`,
       data: getCategories,
-    });
+    };
+
+    return res.status(200).json(data);
   } catch (err) {
     return res.status(400).json({ err: err.message });
   }
 };
 
-export const getCategory_by_Id = async (req, res) => {
+export const getCategoryById = async (req, res) => {
   const { id } = req.params;
   try {
     const getCategory = await CategoryServiceInstance.getCategorybyId({

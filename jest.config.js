@@ -4,7 +4,10 @@ export default async () => {
     verbose: true,
     testEnvironment: "node",
     testTimeout: 10000,
+    globalSetup: "./src/tests/index.js",
+    globalTeardown: "./src/tests/teardown.js",
     coveragePathIgnorePatterns: ["/node_modules/"],
-    setupFilesAfterEnv: ["./src/tests/setupTests.js"],
+    // setupFilesAfterEnv: ["./src/tests/setupTests.js"],
+    roots: ["./src/tests"],
   };
 };

@@ -1,7 +1,7 @@
 import { PostService } from "../../services/Recruiter/PostService.js";
 
 const PostServiceInstance = new PostService();
-export const updateJob_Status = async (req, res) => {
+export const updateJobStatus = async (req, res) => {
   const { pid } = req.params;
   const { status } = req.query;
 
@@ -16,15 +16,14 @@ export const updateJob_Status = async (req, res) => {
     const updatestatus = await PostServiceInstance.updateStatus({
       pid: pid,
       uid: uid,
-      status: status,
+      status: status
     });
-    console.log(updatestatus)
     if (!updatestatus.owner === true)
       return res
         .status(401)
         .json({ status: "failed", err: "Unauthorized action" });
 
-    if (!updatestatus.update_Status[0].id)
+    if (!updatestatus.postStatus[0].id)
       return res
         .status(400)
         .json({ status: "failed", err: "Something Went Wrong" });

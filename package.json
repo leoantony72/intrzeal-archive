@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest ./src/tests/commonRoutes.test.js ./src/tests/Admin/* ./src/tests/Intern/* tests/Recruiter/* --coverage ",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage ",
     "start": "nodemon -L src/server.js",
     "dev": "nodemon -L src/server.js",
     "migrate:dev": "npx prisma db push",
@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.0",
-    "nodemon": "^2.0.15",
+    "nodemon": "^1.3.3",
     "prisma": "^3.10.0",
     "supertest": "^6.2.2"
   }

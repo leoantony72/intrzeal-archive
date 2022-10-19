@@ -6,7 +6,7 @@ export const getStat = async (req, res) => {
     const getStats = await MetricsServiceInstance.stats();
     return res.status(200).json({
       status: "success",
-      data: { user: getStats.user_stats, post: getStats.post_stats },
+      data: { user: getStats.user, post: getStats.post },
     });
   } catch (err) {
     console.log(err.message);
